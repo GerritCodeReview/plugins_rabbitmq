@@ -56,7 +56,7 @@ public class Properties {
   @Inject
   public Properties(final SitePaths site, @GerritServerConfig final Config config) {
     this.config = config;
-    this.pluginConfig = getPluginConfig(new File(site.etc_dir, CONFIG_FILENAME));
+    this.pluginConfig = getPluginConfig(new File(site.etc_dir.toFile(), CONFIG_FILENAME));
     this.properties = generateBasicProperties();
   }
 
