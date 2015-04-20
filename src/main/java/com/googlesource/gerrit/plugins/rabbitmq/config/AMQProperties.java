@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.rabbitmq.config;
 
+import com.google.gerrit.server.util.TimeUtil;
 import com.googlesource.gerrit.plugins.rabbitmq.annotation.MessageHeader;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Message;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Section;
@@ -24,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,6 +81,7 @@ public class AMQProperties {
         .deliveryMode(message.deliveryMode)
         .priority(message.priority)
         .headers(headers)
+        .timestamp(new Date(TimeUtil.nowMs()))
         .build();
     }
     return amqpProperties;
