@@ -72,15 +72,14 @@ public class AMQProperties {
         }
       }
       Message message = properties.getSection(Message.class);
-      AMQP.BasicProperties.Builder builder = new AMQP.BasicProperties.Builder();
-      builder.appId(EVENT_APPID);
-      builder.contentEncoding(CharEncoding.UTF_8);
-      builder.contentType(CONTENT_TYPE_JSON);
-      builder.deliveryMode(message.deliveryMode);
-      builder.priority(message.priority);
-      builder.headers(headers);
-
-      amqpProperties = builder.build();
+      amqpProperties = new AMQP.BasicProperties.Builder()
+        .appId(EVENT_APPID)
+        .contentEncoding(CharEncoding.UTF_8)
+        .contentType(CONTENT_TYPE_JSON)
+        .deliveryMode(message.deliveryMode)
+        .priority(message.priority)
+        .headers(headers)
+        .build();
     }
     return amqpProperties;
   }
