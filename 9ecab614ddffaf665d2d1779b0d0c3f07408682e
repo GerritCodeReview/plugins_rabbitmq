@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "90e9e6d1_7cc8f9a5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/config/AMQProperties.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2015-04-21T06:28:55Z",
+      "side": 1,
+      "message": "Seems like the API version is very outdated. Any reason for that? In recent version TimeUtil was moved to common sub-project.\n\n  apiVersion\u003d2.10",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 46
+      },
+      "revId": "9ecab614ddffaf665d2d1779b0d0c3f07408682e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
