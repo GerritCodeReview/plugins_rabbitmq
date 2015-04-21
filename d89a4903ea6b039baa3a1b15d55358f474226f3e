@@ -22,6 +22,30 @@
       "revId": "d89a4903ea6b039baa3a1b15d55358f474226f3e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "50b5aed8_1ae0dd12",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/config/AMQProperties.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-04-21T06:17:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30b83ad4_19b9cb0e",
+      "range": {
+        "startLine": 83,
+        "startChar": 19,
+        "endLine": 83,
+        "endChar": 29
+      },
+      "revId": "d89a4903ea6b039baa3a1b15d55358f474226f3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
