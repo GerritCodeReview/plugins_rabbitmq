@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "30b83ad4_19b9cb0e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/config/AMQProperties.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2015-04-21T06:12:32Z",
+      "side": 1,
+      "message": "new Date() ctor is using System.currentTimeMillis(). We are using JodaTime library (that uses DateTimeUtils.currentTimeMillis()) elsewhere:\n\n  .timestamp(new Date(TimeUtil.nowMs()))\n\nAdvantage of using another layer, is that it can be easily manipulated in tests, see for example ChangeEditIT.java:\n\n    final long clockStepMs \u003d MILLISECONDS.convert(1, SECONDS);\n    final AtomicLong clockMs \u003d new AtomicLong(\n        new DateTime(2009, 9, 30, 17, 0, 0).getMillis());\n    DateTimeUtils.setCurrentMillisProvider(new MillisProvider() {\n      @Override\n      public long getMillis() {\n        return clockMs.getAndAdd(clockStepMs);\n      }\n    });",
+      "range": {
+        "startLine": 83,
+        "startChar": 19,
+        "endLine": 83,
+        "endChar": 29
+      },
+      "revId": "d89a4903ea6b039baa3a1b15d55358f474226f3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
