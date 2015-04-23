@@ -2,7 +2,6 @@ work/
 build/
 bin/
 target/
-.gradle/
 .classpath
 .checkstyle
 .project
