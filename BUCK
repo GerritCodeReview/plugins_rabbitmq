@@ -24,6 +24,11 @@ gerrit_plugin(
   ],
 )
 
+java_library(
+  name = 'classpath',
+  deps = [':rabbitmq__plugin'],
+)
+
 maven_jar(
   name = 'amqp-client',
   id = 'com.rabbitmq:amqp-client:3.5.1',
