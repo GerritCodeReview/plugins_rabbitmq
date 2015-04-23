@@ -1,7 +1,9 @@
 work/
+buck-out/
 build/
 bin/
 target/
+.buckd/
 .classpath
 .checkstyle
 .project
