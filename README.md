@@ -21,22 +21,21 @@ Environments
 ---------------------
 
 * `linux`
-  * `java-1.7`
-    * `gradle`
+* `java-1.7`
+* `Buck`
 
 Build
 ---------------------
 
-To build plugin with gradle.
+Clone or link this plugin to the plugins directory of Gerrit's source
+tree, and issue the command:
 
-    ./gradlew build
 
-Using another version API
---------------------------
+    buck build plugins/rabbitmq
 
-Now avaliable for Gerrit 2.10 only. If you want to use it on another version of Gerrit, please try the below.
+The output is created in
 
-    ./gradlew build -PapiVersion=2.8
+    buck-out/gen/plugins/rabbitmq/rabbitmq.jar
 
 Reference
 ---------------------
