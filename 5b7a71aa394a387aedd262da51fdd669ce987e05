@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "309bda8e_81581a5c",
+        "filename": "VERSION",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2015-04-24T04:37:36Z",
+      "side": 1,
+      "message": "Is this correct version? Should we drop SNAPSHOT suffix or increase it, or both?",
+      "revId": "5b7a71aa394a387aedd262da51fdd669ce987e05",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
