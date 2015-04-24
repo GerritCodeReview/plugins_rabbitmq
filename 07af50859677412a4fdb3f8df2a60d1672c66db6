@@ -16,6 +16,24 @@
       "revId": "07af50859677412a4fdb3f8df2a60d1672c66db6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "10a256bf_c03dfee1",
+        "filename": ".gitignore",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2015-04-24T04:08:28Z",
+      "side": 1,
+      "message": "Done. .watchmanconfig is needed as well.",
+      "parentUuid": "b0a6ead3_bd145f78",
+      "revId": "07af50859677412a4fdb3f8df2a60d1672c66db6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
