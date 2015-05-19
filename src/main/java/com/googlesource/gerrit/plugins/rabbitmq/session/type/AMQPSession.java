@@ -58,9 +58,10 @@ public final class AMQPSession implements Session {
           if (clazz == Channel.class) {
             Channel ch = Channel.class.cast(obj);
             if (cause.isInitiatedByApplication()) {
-              LOGGER.info(MSG("Channel #{} closed."), ch.getChannelNumber());
+              LOGGER.info(MSG("Channel #{} closed by application."), ch.getChannelNumber());
             } else {
-              LOGGER.info(MSG("Channel #{} suddenly closed."), ch.getChannelNumber());
+              LOGGER.warn(MSG("Channel #{} closed. Cause: {}"),
+                ch.getChannelNumber(), cause.getMessage());
             }
             if (ch.equals(AMQPSession.this.channel)) {
               AMQPSession.this.channel = null;
