@@ -36,54 +36,50 @@ public class AMQProperties {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AMQProperties.class);
 
-  private final PluginProperties properties;
-  private AMQP.BasicProperties amqpProperties;
+  private final Message message;
+  private final Map<String, Object> headers;
 
   public AMQProperties(PluginProperties properties) {
-    this.properties = properties;
-  }
-
-  public AMQP.BasicProperties getBasicProperties() {
-    if (amqpProperties == null) {
-      Map<String, Object> headers = new HashMap<>();
-      for (Section section : properties.getSections()) {
-        for (Field f : section.getClass().getFields()) {
-          if (f.isAnnotationPresent(MessageHeader.class)) {
-            MessageHeader mh = f.getAnnotation(MessageHeader.class);
-            try {
-              switch(f.getType().getSimpleName()) {
-                case "String":
-                  headers.put(mh.value(), f.get(section).toString());
-                  break;
-                case "Integer":
-                  headers.put(mh.value(), f.getInt(section));
-                  break;
-                case "Long":
-                  headers.put(mh.value(), f.getLong(section));
-                  break;
-                case "Boolean":
-                  headers.put(mh.value(), f.getBoolean(section));
-                  break;
-                default:
-                  break;
-              }
-            } catch (Exception ex) {
-              LOGGER.info(ex.getMessage());
+    this.message = properties.getSection(Message.class);
+    this.headers = new HashMap<>();
+    for (Section section : properties.getSections()) {
+      for (Field f : section.getClass().getFields()) {
+        if (f.isAnnotationPresent(MessageHeader.class)) {
+          MessageHeader mh = f.getAnnotation(MessageHeader.class);
+          try {
+            switch(f.getType().getSimpleName()) {
+              case "String":
+                headers.put(mh.value(), f.get(section).toString());
+                break;
+              case "Integer":
+                headers.put(mh.value(), f.getInt(section));
+                break;
+              case "Long":
+                headers.put(mh.value(), f.getLong(section));
+                break;
+              case "Boolean":
+                headers.put(mh.value(), f.getBoolean(section));
+                break;
+              default:
+                break;
             }
+          } catch (Exception ex) {
+            LOGGER.info(ex.getMessage());
           }
         }
       }
-      Message message = properties.getSection(Message.class);
-      amqpProperties = new AMQP.BasicProperties.Builder()
-        .appId(EVENT_APPID)
-        .contentEncoding(CharEncoding.UTF_8)
-        .contentType(CONTENT_TYPE_JSON)
-        .deliveryMode(message.deliveryMode)
-        .priority(message.priority)
-        .headers(headers)
-        .timestamp(new Date(TimeUtil.nowMs()))
-        .build();
     }
-    return amqpProperties;
+  }
+
+  public AMQP.BasicProperties getBasicProperties() {
+    return new AMQP.BasicProperties.Builder()
+      .appId(EVENT_APPID)
+      .contentEncoding(CharEncoding.UTF_8)
+      .contentType(CONTENT_TYPE_JSON)
+      .deliveryMode(message.deliveryMode)
+      .priority(message.priority)
+      .headers(headers)
+      .timestamp(new Date(TimeUtil.nowMs()))
+      .build();
   }
 }
