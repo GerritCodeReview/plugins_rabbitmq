@@ -83,6 +83,17 @@ public class AMQProperties {
         .headers(headers)
         .timestamp(new Date(TimeUtil.nowMs()))
         .build();
+    } else {
+      // Set a new timestamp.
+      amqpProperties = new AMQP.BasicProperties.Builder()
+        .appId(amqpProperties.getAppId())
+        .contentEncoding(amqpProperties.getContentEncoding())
+        .contentType(amqpProperties.getContentType())
+        .deliveryMode(amqpProperties.getDeliveryMode())
+        .priority(amqpProperties.getPriority())
+        .headers(amqpProperties.getHeaders())
+        .timestamp(new Date(TimeUtil.nowMs()))
+        .build();
     }
     return amqpProperties;
   }
