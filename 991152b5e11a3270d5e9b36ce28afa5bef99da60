@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6d257942_13856c0a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2015-05-19T13:00:27Z",
+      "side": 1,
+      "message": "Why? Are we going to change guice version on Gerrit 2.10?",
+      "revId": "991152b5e11a3270d5e9b36ce28afa5bef99da60",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
