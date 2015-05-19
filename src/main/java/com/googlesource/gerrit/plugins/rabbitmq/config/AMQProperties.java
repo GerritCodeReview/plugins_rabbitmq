@@ -37,15 +37,18 @@ public class AMQProperties {
   private static final Logger LOGGER = LoggerFactory.getLogger(AMQProperties.class);
 
   private final PluginProperties properties;
-  private AMQP.BasicProperties amqpProperties;
+  private final Message message;
+
+  private Map<String, Object> headers;
 
   public AMQProperties(PluginProperties properties) {
     this.properties = properties;
+    this.message = properties.getSection(Message.class);
   }
 
   public AMQP.BasicProperties getBasicProperties() {
-    if (amqpProperties == null) {
-      Map<String, Object> headers = new HashMap<>();
+    if (headers == null) {
+      headers = new HashMap<>();
       for (Section section : properties.getSections()) {
         for (Field f : section.getClass().getFields()) {
           if (f.isAnnotationPresent(MessageHeader.class)) {
@@ -73,17 +76,15 @@ public class AMQProperties {
           }
         }
       }
-      Message message = properties.getSection(Message.class);
-      amqpProperties = new AMQP.BasicProperties.Builder()
-        .appId(EVENT_APPID)
-        .contentEncoding(CharEncoding.UTF_8)
-        .contentType(CONTENT_TYPE_JSON)
-        .deliveryMode(message.deliveryMode)
-        .priority(message.priority)
-        .headers(headers)
-        .timestamp(new Date(TimeUtil.nowMs()))
-        .build();
     }
-    return amqpProperties;
+    return new AMQP.BasicProperties.Builder()
+      .appId(EVENT_APPID)
+      .contentEncoding(CharEncoding.UTF_8)
+      .contentType(CONTENT_TYPE_JSON)
+      .deliveryMode(message.deliveryMode)
+      .priority(message.priority)
+      .headers(headers)
+      .timestamp(new Date(TimeUtil.nowMs()))
+      .build();
   }
 }
