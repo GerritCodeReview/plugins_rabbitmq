@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "6d4c9914_7b24bfdb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-05-19T12:40:28Z",
+      "side": 1,
+      "message": "were\n\nor \"are\"",
+      "range": {
+        "startLine": 12,
+        "startChar": 24,
+        "endLine": 12,
+        "endChar": 29
+      },
+      "revId": "ee515de423e95bfcde49a6866bb3c35bf78901ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6d257942_93b73ce9",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/config/AMQProperties.java",
         "patchSetId": 1
