@@ -117,7 +117,7 @@ public class Manager implements LifecycleListener {
     Properties base = propFactory.create(pluginDataDir.resolve(pluginName + FILE_EXT));
     base.load();
 
-    // Load site
+    // Load sites
     try (DirectoryStream<Path> ds = Files.newDirectoryStream(pluginDataDir.resolve(SITE_DIR), "*" + FILE_EXT)) {
       for (Path configFile : ds) {
         Properties site = propFactory.create(configFile);
@@ -127,6 +127,10 @@ public class Manager implements LifecycleListener {
       }
     } catch (IOException iex) {
       LOGGER.warn(iex.getMessage());
+    }
+    if (propList.isEmpty()) {
+      LOGGER.warn("No site configs found. Using base config only!");
+      propList.add(base);
     }
     return propList;
   }
