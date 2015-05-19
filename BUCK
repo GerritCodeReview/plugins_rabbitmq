@@ -31,8 +31,8 @@ java_library(
 
 maven_jar(
   name = 'amqp-client',
-  id = 'com.rabbitmq:amqp-client:3.5.1',
-  sha1 = '6086769bfb7a5054d97b855676aaa525b523f405',
+  id = 'com.rabbitmq:amqp-client:3.5.2',
+  sha1 = '8d10edd29e08f78349bd1da9d18f81c9f8b90567',
   license = 'MPL1.1',
   exclude_java_sources = True,
   visibility = [],
