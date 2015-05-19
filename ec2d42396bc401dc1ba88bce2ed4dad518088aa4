@@ -63,6 +63,24 @@
       "revId": "ec2d42396bc401dc1ba88bce2ed4dad518088aa4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6d257942_939dfc3d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1014252
+      },
+      "writtenOn": "2015-05-19T14:20:10Z",
+      "side": 1,
+      "message": "I didn\u0027t see this, so sorry for merging...",
+      "parentUuid": "4d827552_b217c043",
+      "revId": "ec2d42396bc401dc1ba88bce2ed4dad518088aa4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
