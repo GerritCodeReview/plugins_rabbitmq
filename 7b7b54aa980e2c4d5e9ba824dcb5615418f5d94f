@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4d827552_92b71ce9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/config/AMQProperties.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1014252
+      },
+      "writtenOn": "2015-05-19T13:43:12Z",
+      "side": 1,
+      "message": "Now this code fits better in the constructor.\nThen we could skip the properties instance variable as well since it is only used by this code.",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 7
+      },
+      "revId": "7b7b54aa980e2c4d5e9ba824dcb5615418f5d94f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
