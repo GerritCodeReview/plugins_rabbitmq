@@ -69,9 +69,9 @@ public final class AMQPSession implements Session {
           } else if (clazz == Connection.class) {
             Connection conn = Connection.class.cast(obj);
             if (cause.isInitiatedByApplication()) {
-              LOGGER.info(MSG("Connection closed."));
+              LOGGER.info(MSG("Connection closed by application."));
             } else {
-              LOGGER.info(MSG("Connection suddenly closed."));
+              LOGGER.warn(MSG("Connection closed. Cause: {}"), cause.getMessage());
             }
             if (conn.equals(AMQPSession.this.connection)) {
               AMQPSession.this.connection = null;
