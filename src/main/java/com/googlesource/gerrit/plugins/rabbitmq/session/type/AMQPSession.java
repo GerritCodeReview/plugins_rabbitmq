@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public final class AMQPSession implements Session {
 
@@ -86,7 +87,7 @@ public final class AMQPSession implements Session {
   private final Properties properties;
   private volatile Connection connection;
   private volatile Channel channel;
-  private volatile int failureCount = 0;
+  private AtomicInteger failureCount = new AtomicInteger(0);
 
   private final ShutdownListener connectionListener = new ShutdownListenerImpl(Connection.class);
   private final ShutdownListener channelListener = new ShutdownListenerImpl(Channel.class);
@@ -115,13 +116,17 @@ public final class AMQPSession implements Session {
       try {
         ch = connection.createChannel();
         ch.addShutdownListener(channelListener);
-        failureCount = 0;
+        synchronized(this) {
+          failureCount.set(0);
+        }
         LOGGER.info(MSG("Channel #{} opened."), ch.getChannelNumber());
       } catch (Exception ex) {
         LOGGER.warn(MSG("Failed to open channel."));
-        failureCount++;
+        synchronized(this) {
+          failureCount.incrementAndGet();
+        }
       }
-      if (failureCount > properties.getSection(Monitor.class).failureCount) {
+      if (failureCount.get() > properties.getSection(Monitor.class).failureCount) {
         LOGGER.warn("Connection has something wrong. So will be disconnected.");
         disconnect();
       }
