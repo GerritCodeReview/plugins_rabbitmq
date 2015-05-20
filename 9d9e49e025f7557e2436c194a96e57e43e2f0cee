@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4d827552_f247880e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/config/section/Sections.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1014252
+      },
+      "writtenOn": "2015-05-20T14:20:06Z",
+      "side": 1,
+      "message": "Maybe something in the lines of:\n\"Cannot access field {}. Cause: {}\", f.getName(), ex.getMessage()",
+      "range": {
+        "startLine": 108,
+        "startChar": 25,
+        "endLine": 108,
+        "endChar": 53
+      },
+      "revId": "9d9e49e025f7557e2436c194a96e57e43e2f0cee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
