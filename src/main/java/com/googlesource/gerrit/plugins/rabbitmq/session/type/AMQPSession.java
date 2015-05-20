@@ -118,8 +118,8 @@ public final class AMQPSession implements Session {
         ch.addShutdownListener(channelListener);
         failureCount.set(0);
         LOGGER.info(MSG("Channel #{} opened."), ch.getChannelNumber());
-      } catch (Exception ex) {
-        LOGGER.warn(MSG("Failed to open channel."));
+      } catch (IOException ex) {
+        LOGGER.warn(MSG("Failed to open channel."), ex);
         failureCount.incrementAndGet();
       }
       if (failureCount.get() > properties.getSection(Monitor.class).failureCount) {
@@ -155,7 +155,7 @@ public final class AMQPSession implements Session {
     } catch (URISyntaxException ex) {
       LOGGER.error(MSG("URI syntax error: {}"), amqp.uri);
     } catch (IOException ex) {
-      LOGGER.error(MSG("Connection cannot be opened."));
+      LOGGER.error(MSG("Connection cannot be opened."), ex);
     } catch (Exception ex) {
       LOGGER.warn(MSG("Connection has something error. it will be disposed."), ex);
     }
