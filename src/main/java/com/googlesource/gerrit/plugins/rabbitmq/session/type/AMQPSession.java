@@ -58,9 +58,10 @@ public final class AMQPSession implements Session {
           if (clazz == Channel.class) {
             Channel ch = Channel.class.cast(obj);
             if (cause.isInitiatedByApplication()) {
-              LOGGER.info(MSG("Channel #{} closed."), ch.getChannelNumber());
+              LOGGER.info(MSG("Channel #{} closed by application."), ch.getChannelNumber());
             } else {
-              LOGGER.info(MSG("Channel #{} suddenly closed."), ch.getChannelNumber());
+              LOGGER.warn(MSG("Channel #{} closed. Cause: {}"),
+                ch.getChannelNumber(), cause.getMessage());
             }
             if (ch.equals(AMQPSession.this.channel)) {
               AMQPSession.this.channel = null;
@@ -68,9 +69,9 @@ public final class AMQPSession implements Session {
           } else if (clazz == Connection.class) {
             Connection conn = Connection.class.cast(obj);
             if (cause.isInitiatedByApplication()) {
-              LOGGER.info(MSG("Connection closed."));
+              LOGGER.info(MSG("Connection closed by application."));
             } else {
-              LOGGER.info(MSG("Connection suddenly closed."));
+              LOGGER.warn(MSG("Connection closed. Cause: {}"), cause.getMessage());
             }
             if (conn.equals(AMQPSession.this.connection)) {
               AMQPSession.this.connection = null;
