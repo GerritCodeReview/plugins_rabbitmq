@@ -175,6 +175,7 @@ public class PluginProperties implements Properties {
     return MINIMUM_CONNECTION_MONITOR_INTERVAL;
   }
 
+  @Override
   public AMQProperties getAMQProperties() {
     if (amqProperties == null) {
       amqProperties = new AMQProperties(this);

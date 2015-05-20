@@ -55,6 +55,7 @@ public class V1 implements Solver {
    * new : data/rabbitmq/rabbitmq.config
    *       data/rabbitmq/site/default.config
    */
+  @Override
   public void solve() {
     try {
       Path oldFile = etcDir.resolve(pluginName + FILE_EXT);
