@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4d827552_b2a26079",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/session/type/AMQPSession.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2015-05-20T04:02:13Z",
+      "side": 1,
+      "message": "Add final?",
+      "range": {
+        "startLine": 90,
+        "startChar": 10,
+        "endLine": 90,
+        "endChar": 23
+      },
+      "revId": "cf1f922d49ec660a005f3bbc3865fd1a9045c5ee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
