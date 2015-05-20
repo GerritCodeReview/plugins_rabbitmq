@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4d827552_12648cc9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/session/type/AMQPSession.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2015-05-20T11:25:14Z",
+      "side": 1,
+      "message": "Switch the order: first all final and then non final? Can be done in another change.",
+      "range": {
+        "startLine": 88,
+        "startChar": 2,
+        "endLine": 89,
+        "endChar": 35
+      },
+      "revId": "e392541fa40283041b53e4bad31e12bd222e73c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
