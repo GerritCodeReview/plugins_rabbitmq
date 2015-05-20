@@ -22,6 +22,30 @@
       "revId": "a0538e84cddb41490580e60ba917ef2287d73997",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4d1d15f6_da96254b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/session/type/AMQPSession.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-05-20T13:08:00Z",
+      "side": 1,
+      "message": "You mean [1]?\n\nThat one is to fix a specific warning that is raised by FindBugs.  This one here is not the same.\n\nBut still, I guess this could be squashed with that.  There are also some other places where Exception is caught, and they could be fixed at the same time.\n\n[1] https://gerrit-review.googlesource.com/#/c/68003/4",
+      "parentUuid": "4d827552_5243f421",
+      "range": {
+        "startLine": 121,
+        "startChar": 15,
+        "endLine": 121,
+        "endChar": 26
+      },
+      "revId": "a0538e84cddb41490580e60ba917ef2287d73997",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
