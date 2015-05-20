@@ -39,13 +39,13 @@ public final class Sections {
           Default a = f.getAnnotation(Default.class);
           Class<?> type = f.getType();
           if (type == String.class) {
-            f.set(section, new String(a.value()));
+            f.set(section, a.value());
           } else if (type == Integer.class) {
-            f.set(section, new Integer(a.value()));
+            f.set(section, a.value());
           } else if (type == Long.class) {
-            f.set(section, new Long(a.value()));
+            f.set(section, a.value());
           } else if (type == Boolean.class) {
-            f.set(section, new Boolean(a.value()));
+            f.set(section, a.value());
           }
         }
       } catch (Exception ex) {
@@ -95,13 +95,13 @@ public final class Sections {
             if (names.contains(f.getName())) {
               Class<?> type = f.getType();
               if (type == String.class) {
-                f.set(section, new String(config.getString(getName(section), null, f.getName())));
+                f.set(section, config.getString(getName(section), null, f.getName()));
               } else if (type == Integer.class) {
-                f.set(section, new Integer(config.getInt(getName(section), null, f.getName(), 0)));
+                f.set(section, config.getInt(getName(section), null, f.getName(), 0));
               } else if (type == Long.class) {
-                f.set(section, new Long(config.getLong(getName(section), null, f.getName(), 0)));
+                f.set(section, config.getLong(getName(section), null, f.getName(), 0));
               } else if (type == Boolean.class) {
-                f.set(section, new Boolean(config.getBoolean(getName(section), null, f.getName(), false)));
+                f.set(section, config.getBoolean(getName(section), null, f.getName(), false));
               }
             }
           } catch (Exception ex) {
