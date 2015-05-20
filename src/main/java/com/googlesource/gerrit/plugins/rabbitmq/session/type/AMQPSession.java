@@ -34,6 +34,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class AMQPSession implements Session {
@@ -118,8 +121,8 @@ public final class AMQPSession implements Session {
         ch.addShutdownListener(channelListener);
         failureCount.set(0);
         LOGGER.info(MSG("Channel #{} opened."), ch.getChannelNumber());
-      } catch (Exception ex) {
-        LOGGER.warn(MSG("Failed to open channel."));
+      } catch (IOException ex) {
+        LOGGER.error(MSG("Failed to open channel."), ex);
         failureCount.incrementAndGet();
       }
       if (failureCount.get() > properties.getSection(Monitor.class).failureCount) {
@@ -155,9 +158,9 @@ public final class AMQPSession implements Session {
     } catch (URISyntaxException ex) {
       LOGGER.error(MSG("URI syntax error: {}"), amqp.uri);
     } catch (IOException ex) {
-      LOGGER.error(MSG("Connection cannot be opened."));
-    } catch (Exception ex) {
-      LOGGER.warn(MSG("Connection has something error. it will be disposed."), ex);
+      LOGGER.error(MSG("Connection cannot be opened."), ex);
+    } catch (KeyManagementException | NoSuchAlgorithmException ex) {
+      LOGGER.error(MSG("Security error when opening connection."), ex);
     }
   }
 
@@ -166,22 +169,22 @@ public final class AMQPSession implements Session {
     LOGGER.info(MSG("Disconnecting..."));
     try {
       if (channel != null) {
-        LOGGER.info(MSG("Close Channel #{}..."), channel.getChannelNumber());
+        LOGGER.info(MSG("Closing Channel #{}..."), channel.getChannelNumber());
         channel.close();
       }
-    } catch (Exception ex) {
-      LOGGER.warn(MSG("Error when close channel.") , ex);
+    } catch (IOException | TimeoutException ex) {
+      LOGGER.error(MSG("Error when closing channel."), ex);
     } finally {
       channel = null;
     }
 
     try {
       if (connection != null) {
-        LOGGER.info(MSG("Close Connection..."));
+        LOGGER.info(MSG("Closing Connection..."));
         connection.close();
       }
-    } catch (Exception ex) {
-      LOGGER.warn(MSG("Error when close connection.") , ex);
+    } catch (IOException ex) {
+      LOGGER.error(MSG("Error when closing connection."), ex);
     } finally {
       connection = null;
     }
@@ -196,12 +199,12 @@ public final class AMQPSession implements Session {
       Message message = properties.getSection(Message.class);
       Exchange exchange = properties.getSection(Exchange.class);
       try {
-        LOGGER.debug(MSG("Send message."));
+        LOGGER.debug(MSG("Sending message."));
         channel.basicPublish(exchange.name, message.routingKey,
             properties.getAMQProperties().getBasicProperties(),
             messageBody.getBytes(CharEncoding.UTF_8));
-      } catch (Exception ex) {
-        LOGGER.warn(MSG("Error when sending meessage."), ex);
+      } catch (IOException ex) {
+        LOGGER.error(MSG("Error when sending meessage."), ex);
       }
     }
   }

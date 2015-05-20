@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -65,8 +66,8 @@ public class V1 implements Solver {
       Files.createDirectories(siteDir);
       Files.move(oldFile, newFile);
       Files.createFile(siteDir.resolve(DEFAULT_SITE_NAME + FILE_EXT));
-    } catch (Exception ex) {
-      LOGGER.info(ex.getMessage());
+    } catch (IOException ex) {
+      LOGGER.error("Failed to initialize plugin configuration", ex);
     }
   }
 }

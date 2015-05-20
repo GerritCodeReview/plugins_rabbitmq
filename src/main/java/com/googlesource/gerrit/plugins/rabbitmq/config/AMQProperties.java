@@ -63,8 +63,9 @@ public class AMQProperties {
               default:
                 break;
             }
-          } catch (Exception ex) {
-            LOGGER.info(ex.getMessage());
+          } catch (IllegalAccessException ex) {
+            LOGGER.warn("Cannot access field {}. Cause: {}",
+                f.getName(), ex.getMessage());
           }
         }
       }

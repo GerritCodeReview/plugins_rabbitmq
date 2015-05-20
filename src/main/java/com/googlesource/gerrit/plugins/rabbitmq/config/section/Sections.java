@@ -48,8 +48,9 @@ public final class Sections {
             f.set(section, Boolean.valueOf(a.value()));
           }
         }
-      } catch (Exception ex) {
-        LOGGER.warn("Exception during initialize: {}", f.getName());
+      } catch (IllegalAccessException ex) {
+        LOGGER.warn("Cannot access field {}. Cause: {}",
+            f.getName(), ex.getMessage());
       }
     }
     return section;
@@ -76,9 +77,9 @@ public final class Sections {
             config.setBoolean(getName(section), null, f.getName(), Boolean.class.cast(obj));
           }
         }
-      } catch (Exception ex) {
-        LOGGER.warn("Exception during toConfig: {}", f.getName());
-        LOGGER.info("{}", ex.getMessage());
+      } catch (IllegalAccessException ex) {
+        LOGGER.warn("Cannot access field {}. Cause: {}",
+            f.getName(), ex.getMessage());
       }
     }
     return config;
@@ -104,8 +105,9 @@ public final class Sections {
                 f.set(section, config.getBoolean(getName(section), null, f.getName(), false));
               }
             }
-          } catch (Exception ex) {
-            LOGGER.warn("Exception during fromConfig: {}", f.getName());
+          } catch (IllegalAccessException ex) {
+            LOGGER.warn("Cannot access field {}. Cause: {}",
+                f.getName(), ex.getMessage());
           }
         }
       }
@@ -131,9 +133,9 @@ public final class Sections {
             f.set(section, val);
           }
         }
-      } catch (Exception ex) {
-        LOGGER.warn("Exception during normalize: {}", f.getName());
-        LOGGER.info("{}", ex.getMessage());
+      } catch (IllegalAccessException ex) {
+        LOGGER.warn("Cannot access field {}. Cause: {}",
+            f.getName(), ex.getMessage());
       }
     }
     return section;
