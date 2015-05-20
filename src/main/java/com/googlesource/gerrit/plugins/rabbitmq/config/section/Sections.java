@@ -48,7 +48,7 @@ public final class Sections {
             f.set(section, a.value());
           }
         }
-      } catch (Exception ex) {
+      } catch (IllegalAccessException ex) {
         LOGGER.warn("Exception during initialize: {}", f.getName());
       }
     }
@@ -104,7 +104,7 @@ public final class Sections {
                 f.set(section, config.getBoolean(getName(section), null, f.getName(), false));
               }
             }
-          } catch (Exception ex) {
+          } catch (IllegalAccessException ex) {
             LOGGER.warn("Exception during fromConfig: {}", f.getName());
           }
         }
