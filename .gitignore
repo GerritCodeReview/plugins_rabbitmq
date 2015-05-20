@@ -1,11 +1,15 @@
 work/
+buck-out/
+bucklets
 build/
 bin/
 target/
-.gradle/
+.buckd/
+.buckversion
 .classpath
 .checkstyle
 .project
 .settings/
 .idea/
+.watchmanconfig
 *.iml
