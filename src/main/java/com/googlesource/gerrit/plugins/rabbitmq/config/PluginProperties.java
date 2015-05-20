@@ -115,7 +115,10 @@ public class PluginProperties implements Properties {
   @Override
   public String getName() {
     if (propertiesFile != null) {
-      return FilenameUtils.removeExtension(propertiesFile.getFileName().toString());
+      Path path = propertiesFile.getFileName();
+      if (path != null) {
+        return FilenameUtils.removeExtension(path.toString());
+      }
     }
     return null;
   }
