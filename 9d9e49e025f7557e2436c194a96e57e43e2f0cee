@@ -22,6 +22,53 @@
       "revId": "9d9e49e025f7557e2436c194a96e57e43e2f0cee",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cd75853f_6eb3afdb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/config/section/Sections.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-05-21T00:29:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d827552_f247880e",
+      "range": {
+        "startLine": 108,
+        "startChar": 25,
+        "endLine": 108,
+        "endChar": 53
+      },
+      "revId": "9d9e49e025f7557e2436c194a96e57e43e2f0cee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cd75853f_0ec0eb29",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/config/section/Sections.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-05-21T00:29:43Z",
+      "side": 1,
+      "message": "Also fix here.\n\nDone.",
+      "range": {
+        "startLine": 134,
+        "startChar": 15,
+        "endLine": 134,
+        "endChar": 24
+      },
+      "revId": "9d9e49e025f7557e2436c194a96e57e43e2f0cee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
