@@ -22,6 +22,30 @@
       "revId": "e392541fa40283041b53e4bad31e12bd222e73c2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cd75853f_ce93c332",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/session/type/AMQPSession.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-05-21T01:57:29Z",
+      "side": 1,
+      "message": "There is a lot of code in this plugin that does not follow the Google style.  I\u0027d prefer not to move things just for the sake of fixing the style; it\u0027ll mess up the blame information.",
+      "parentUuid": "4d827552_12648cc9",
+      "range": {
+        "startLine": 88,
+        "startChar": 2,
+        "endLine": 89,
+        "endChar": 35
+      },
+      "revId": "e392541fa40283041b53e4bad31e12bd222e73c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
