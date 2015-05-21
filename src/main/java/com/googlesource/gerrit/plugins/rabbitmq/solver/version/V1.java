@@ -62,10 +62,15 @@ public class V1 implements Solver {
       Path oldFile = etcDir.resolve(pluginName + FILE_EXT);
       Path newFile = pluginDataDir.resolve(pluginName + FILE_EXT);
       Path siteDir = pluginDataDir.resolve(SITE_DIR);
+      Path defaultSiteFile = siteDir.resolve(DEFAULT_SITE_NAME + FILE_EXT);
 
       Files.createDirectories(siteDir);
-      Files.move(oldFile, newFile);
-      Files.createFile(siteDir.resolve(DEFAULT_SITE_NAME + FILE_EXT));
+      if (oldFile.toFile().exists()) {
+        Files.move(oldFile, newFile);
+      }
+      if (!defaultSiteFile.toFile().exists()) {
+        Files.createFile(defaultSiteFile);
+      }
     } catch (IOException ex) {
       LOGGER.error("Failed to initialize plugin configuration", ex);
     }
