@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -55,17 +56,23 @@ public class V1 implements Solver {
    * new : data/rabbitmq/rabbitmq.config
    *       data/rabbitmq/site/default.config
    */
+  @Override
   public void solve() {
     try {
       Path oldFile = etcDir.resolve(pluginName + FILE_EXT);
       Path newFile = pluginDataDir.resolve(pluginName + FILE_EXT);
       Path siteDir = pluginDataDir.resolve(SITE_DIR);
+      Path defaultSiteFile = siteDir.resolve(DEFAULT_SITE_NAME + FILE_EXT);
 
       Files.createDirectories(siteDir);
-      Files.move(oldFile, newFile);
-      Files.createFile(siteDir.resolve(DEFAULT_SITE_NAME + FILE_EXT));
-    } catch (Exception ex) {
-      LOGGER.info(ex.getMessage());
+      if (oldFile.toFile().exists()) {
+        Files.move(oldFile, newFile);
+      }
+      if (!defaultSiteFile.toFile().exists()) {
+        Files.createFile(defaultSiteFile);
+      }
+    } catch (IOException ex) {
+      LOGGER.error("Failed to initialize plugin configuration", ex);
     }
   }
 }
