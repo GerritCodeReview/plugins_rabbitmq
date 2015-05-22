@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4de0b53c_e2fe867a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/solver/version/V1.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1014252
+      },
+      "writtenOn": "2015-05-22T14:07:12Z",
+      "side": 1,
+      "message": "This is where I get confused.\nThis should throw a FileAlreadyExistsException if the new file already exists (if gerrit admin prepared the new config setup before deploy, like we did).\nBut it didn\u0027t in our case. Can\u0027t find anything in the logs at least. And I can\u0027t find the code where the plugin goes \"oh, there already exists a config file at the new place, then I don\u0027t have to move the old one\" ...but there should be.\n\nOr did I misunderstand something totally.",
+      "range": {
+        "startLine": 69,
+        "startChar": 8,
+        "endLine": 69,
+        "endChar": 37
+      },
+      "revId": "3a9cbbb726a4ba525d06fbd7cf2ccbfb51198806",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
