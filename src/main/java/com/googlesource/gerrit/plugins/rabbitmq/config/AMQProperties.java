@@ -47,24 +47,29 @@ public class AMQProperties {
         if (f.isAnnotationPresent(MessageHeader.class)) {
           MessageHeader mh = f.getAnnotation(MessageHeader.class);
           try {
+            Object value = f.get(section);
+            if (value == null) {
+              continue;
+            }
             switch(f.getType().getSimpleName()) {
               case "String":
-                headers.put(mh.value(), f.get(section).toString());
+                headers.put(mh.value(), value.toString());
                 break;
               case "Integer":
-                headers.put(mh.value(), f.getInt(section));
+                headers.put(mh.value(), Integer.valueOf(value.toString()));
                 break;
               case "Long":
-                headers.put(mh.value(), f.getLong(section));
+                headers.put(mh.value(), Long.valueOf(value.toString()));
                 break;
               case "Boolean":
-                headers.put(mh.value(), f.getBoolean(section));
+                headers.put(mh.value(), Boolean.valueOf(value.toString()));
                 break;
               default:
                 break;
             }
-          } catch (Exception ex) {
-            LOGGER.info(ex.getMessage());
+          } catch (IllegalAccessException | IllegalArgumentException ex) {
+            LOGGER.warn("Cannot access field {}. Cause: {}",
+                f.getName(), ex.getMessage());
           }
         }
       }

@@ -115,7 +115,10 @@ public class PluginProperties implements Properties {
   @Override
   public String getName() {
     if (propertiesFile != null) {
-      return FilenameUtils.removeExtension(propertiesFile.getFileName().toString());
+      Path path = propertiesFile.getFileName();
+      if (path != null) {
+        return FilenameUtils.removeExtension(path.toString());
+      }
     }
     return null;
   }
@@ -136,7 +139,7 @@ public class PluginProperties implements Properties {
   }
 
   public String getGerritFrontUrl() {
-    Gerrit gerrit = (Gerrit) getSection(Gerrit.class);
+    Gerrit gerrit = getSection(Gerrit.class);
     if (gerrit != null) {
       return gerrit.canonicalWebUrl;
     }
@@ -144,7 +147,7 @@ public class PluginProperties implements Properties {
   }
 
   public boolean hasListenAs() {
-    Gerrit gerrit = (Gerrit) getSection(Gerrit.class);
+    Gerrit gerrit = getSection(Gerrit.class);
     if (gerrit != null) {
       return gerrit.listenAs.isEmpty();
     }
@@ -152,7 +155,7 @@ public class PluginProperties implements Properties {
   }
 
   public String getListenAs() {
-    Gerrit gerrit = (Gerrit) getSection(Gerrit.class);
+    Gerrit gerrit = getSection(Gerrit.class);
     if (gerrit != null) {
       return gerrit.listenAs;
     }
@@ -160,7 +163,7 @@ public class PluginProperties implements Properties {
   }
 
   public String getGerritVersion() {
-    Gerrit gerrit = (Gerrit) getSection(Gerrit.class);
+    Gerrit gerrit = getSection(Gerrit.class);
     if (gerrit != null) {
       return gerrit.version;
     }
@@ -168,13 +171,14 @@ public class PluginProperties implements Properties {
   }
 
   public int getConnectionMonitorInterval() {
-    Monitor monitor = (Monitor) getSection(Monitor.class);
+    Monitor monitor = getSection(Monitor.class);
     if (monitor != null && monitor.interval < MINIMUM_CONNECTION_MONITOR_INTERVAL) {
       return monitor.interval;
     }
     return MINIMUM_CONNECTION_MONITOR_INTERVAL;
   }
 
+  @Override
   public AMQProperties getAMQProperties() {
     if (amqProperties == null) {
       amqProperties = new AMQProperties(this);
