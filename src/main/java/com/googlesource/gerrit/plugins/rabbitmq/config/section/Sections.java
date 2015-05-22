@@ -39,17 +39,18 @@ public final class Sections {
           Default a = f.getAnnotation(Default.class);
           Class<?> type = f.getType();
           if (type == String.class) {
-            f.set(section, new String(a.value()));
+            f.set(section, a.value());
           } else if (type == Integer.class) {
-            f.set(section, new Integer(a.value()));
+            f.set(section, Integer.valueOf(a.value()));
           } else if (type == Long.class) {
-            f.set(section, new Long(a.value()));
+            f.set(section, Long.valueOf(a.value()));
           } else if (type == Boolean.class) {
-            f.set(section, new Boolean(a.value()));
+            f.set(section, Boolean.valueOf(a.value()));
           }
         }
-      } catch (Exception ex) {
-        LOGGER.warn("Exception during initialize: {}", f.getName());
+      } catch (IllegalAccessException ex) {
+        LOGGER.warn("Cannot access field {}. Cause: {}",
+            f.getName(), ex.getMessage());
       }
     }
     return section;
@@ -76,9 +77,9 @@ public final class Sections {
             config.setBoolean(getName(section), null, f.getName(), Boolean.class.cast(obj));
           }
         }
-      } catch (Exception ex) {
-        LOGGER.warn("Exception during toConfig: {}", f.getName());
-        LOGGER.info("{}", ex.getMessage());
+      } catch (IllegalAccessException ex) {
+        LOGGER.warn("Cannot access field {}. Cause: {}",
+            f.getName(), ex.getMessage());
       }
     }
     return config;
@@ -95,17 +96,18 @@ public final class Sections {
             if (names.contains(f.getName())) {
               Class<?> type = f.getType();
               if (type == String.class) {
-                f.set(section, new String(config.getString(getName(section), null, f.getName())));
+                f.set(section, config.getString(getName(section), null, f.getName()));
               } else if (type == Integer.class) {
-                f.set(section, new Integer(config.getInt(getName(section), null, f.getName(), 0)));
+                f.set(section, config.getInt(getName(section), null, f.getName(), 0));
               } else if (type == Long.class) {
-                f.set(section, new Long(config.getLong(getName(section), null, f.getName(), 0)));
+                f.set(section, config.getLong(getName(section), null, f.getName(), 0));
               } else if (type == Boolean.class) {
-                f.set(section, new Boolean(config.getBoolean(getName(section), null, f.getName(), false)));
+                f.set(section, config.getBoolean(getName(section), null, f.getName(), false));
               }
             }
-          } catch (Exception ex) {
-            LOGGER.warn("Exception during fromConfig: {}", f.getName());
+          } catch (IllegalAccessException ex) {
+            LOGGER.warn("Cannot access field {}. Cause: {}",
+                f.getName(), ex.getMessage());
           }
         }
       }
@@ -131,9 +133,9 @@ public final class Sections {
             f.set(section, val);
           }
         }
-      } catch (Exception ex) {
-        LOGGER.warn("Exception during normalize: {}", f.getName());
-        LOGGER.info("{}", ex.getMessage());
+      } catch (IllegalAccessException ex) {
+        LOGGER.warn("Cannot access field {}. Cause: {}",
+            f.getName(), ex.getMessage());
       }
     }
     return section;
