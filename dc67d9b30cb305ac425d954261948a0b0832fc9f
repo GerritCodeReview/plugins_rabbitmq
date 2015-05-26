@@ -16,6 +16,24 @@
       "revId": "dc67d9b30cb305ac425d954261948a0b0832fc9f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4dd7d57e_2a27bfe2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/solver/version/V1.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-05-26T08:58:59Z",
+      "side": 1,
+      "message": "Yeah, I guess it can just be removed.",
+      "parentUuid": "0dd15d8c_0856472e",
+      "revId": "dc67d9b30cb305ac425d954261948a0b0832fc9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
