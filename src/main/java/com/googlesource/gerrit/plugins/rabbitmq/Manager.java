@@ -25,7 +25,6 @@ import com.googlesource.gerrit.plugins.rabbitmq.config.PropertiesFactory;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Gerrit;
 import com.googlesource.gerrit.plugins.rabbitmq.message.Publisher;
 import com.googlesource.gerrit.plugins.rabbitmq.message.PublisherFactory;
-import com.googlesource.gerrit.plugins.rabbitmq.solver.Solver;
 import com.googlesource.gerrit.plugins.rabbitmq.worker.EventWorker;
 import com.googlesource.gerrit.plugins.rabbitmq.worker.EventWorkerFactory;
 import com.googlesource.gerrit.plugins.rabbitmq.worker.DefaultEventWorker;
@@ -40,7 +39,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Singleton
 public class Manager implements LifecycleListener {
@@ -56,7 +54,6 @@ public class Manager implements LifecycleListener {
   private final EventWorker userEventWorker;
   private final PublisherFactory publisherFactory;
   private final PropertiesFactory propFactory;
-  private final Set<Solver> solvers;
   private final List<Publisher> publisherList = new ArrayList<>();
 
   @Inject
@@ -66,23 +63,17 @@ public class Manager implements LifecycleListener {
       final DefaultEventWorker defaultEventWorker,
       final EventWorkerFactory eventWorkerFactory,
       final PublisherFactory publisherFactory,
-      final PropertiesFactory propFactory,
-      final Set<Solver> solvers) {
+      final PropertiesFactory propFactory) {
     this.pluginName = pluginName;
     this.pluginDataDir = pluginData.toPath();
     this.defaultEventWorker = defaultEventWorker;
     this.userEventWorker = eventWorkerFactory.create();
     this.publisherFactory = publisherFactory;
     this.propFactory = propFactory;
-    this.solvers = solvers;
   }
 
   @Override
   public void start() {
-    for (Solver solver : solvers) {
-      solver.solve();
-    }
-
     List<Properties> propList = load();
     for (Properties properties : propList) {
       Publisher publisher = publisherFactory.create(properties);
