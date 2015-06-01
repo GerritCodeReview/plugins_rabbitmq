@@ -34,6 +34,24 @@
       "revId": "dc67d9b30cb305ac425d954261948a0b0832fc9f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d9246ca6_762c30d3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/solver/version/V1.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-06-01T01:21:37Z",
+      "side": 1,
+      "message": "Done in https://gerrit-review.googlesource.com/68203",
+      "parentUuid": "4dd7d57e_2a27bfe2",
+      "revId": "dc67d9b30cb305ac425d954261948a0b0832fc9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
