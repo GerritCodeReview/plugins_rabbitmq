@@ -14,12 +14,12 @@ gerrit_plugin(
   ],
   deps = [
     ':amqp-client',
+    '//lib/commons:io',
     ':guice-multibindings',
   ],
   provided_deps = [
     '//lib:gson',
     '//lib/commons:codec',
-    '//lib/commons:io',
     '//lib/commons:lang',
   ],
 )
