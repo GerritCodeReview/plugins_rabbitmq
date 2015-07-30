@@ -14,7 +14,7 @@ gerrit_plugin(
   ],
   deps = [
     ':amqp-client',
-    '//lib/commons:io',
+    ':commons-io',
     ':guice-multibindings',
   ],
   provided_deps = [
@@ -36,6 +36,13 @@ maven_jar(
   license = 'MPL1.1',
   exclude_java_sources = True,
   visibility = [],
+)
+
+maven_jar(
+  name = 'commons-io',
+  id = 'commons-io:commons-io:1.4',
+  sha1 = 'a8762d07e76cfde2395257a5da47ba7c1dbd3dce',
+  license = 'Apache2.0',
 )
 
 maven_jar(
