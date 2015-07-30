@@ -16,6 +16,24 @@
       "revId": "c9e55e8f661e21e85605c248dc9a5107c02f4b68",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0af5c83c_5f44ab71",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1012155
+      },
+      "writtenOn": "2015-07-30T09:58:53Z",
+      "side": 1,
+      "message": "True. True.\nGood catch.\n\nThe replication plugin compiled, and loaded just fine.\nHence, I bothered no more.\n\nBut you\u0027re right.\nIt should hit the replication plugin too.\n\nTo finally trigger it, I had to actually set up a remote with\n\n  remoteNameStyle \u003d basenameOnly\n\n.\n\nCorresponding fix is:\n\n  Ifdfc54a3fceeb457cd4729da7568026a16cc0d22\n\nI guess I should try to trigger the issue also for the other\nplugins that use commons-io :-)",
+      "parentUuid": "aa059cff_dc668d1a",
+      "revId": "c9e55e8f661e21e85605c248dc9a5107c02f4b68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
