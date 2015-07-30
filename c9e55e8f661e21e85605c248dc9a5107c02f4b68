@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aa059cff_dc668d1a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2015-07-30T07:14:08Z",
+      "side": 1,
+      "message": "What about replication-plugin? It is also using commons-io as provided dependency:\n\n  gerrit_plugin(\n    name \u003d \u0027replication\u0027,\n    srcs \u003d glob([\u0027src/main/java/**/*.java\u0027]),\n    [...]\n    provided_deps \u003d [\n      \u0027//lib:gson\u0027,\n      \u0027//lib/commons:io\u0027,",
+      "revId": "c9e55e8f661e21e85605c248dc9a5107c02f4b68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
