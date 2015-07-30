@@ -52,6 +52,24 @@
       "revId": "c9e55e8f661e21e85605c248dc9a5107c02f4b68",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "aa059cff_3cae919d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1012155
+      },
+      "writtenOn": "2015-07-30T11:12:47Z",
+      "side": 1,
+      "message": "The only remaining plugin seems to be x-docs.\n\nFortunately x-docs has commons-io bundled through\n\n \u0027x-docs\u0027 -\u003e \u0027docx4j_lib\u0027 -\u003e \u0027commons_lib\u0027 -\u003e \u0027io\u0027\n\nalready. So x-docs is fine too.",
+      "parentUuid": "aa059cff_7ca419bf",
+      "revId": "c9e55e8f661e21e85605c248dc9a5107c02f4b68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
