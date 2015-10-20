@@ -82,7 +82,7 @@ public class UserEventWorker implements EventWorker {
             .setContext(new RequestContext() {
 
               @Override
-              public CurrentUser getCurrentUser() {
+              public CurrentUser getUser() {
                 return pluginUser;
               }
 
