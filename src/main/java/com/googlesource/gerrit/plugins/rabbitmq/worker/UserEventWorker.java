@@ -14,13 +14,16 @@
 
 package com.googlesource.gerrit.plugins.rabbitmq.worker;
 
-import com.google.gerrit.common.EventSource;
+import com.google.gerrit.common.UserScopedEventListener;
+import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.extensions.registration.RegistrationHandle;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.PluginUser;
 import com.google.gerrit.server.account.AccountResolver;
+import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.git.WorkQueue;
 import com.google.gerrit.server.util.RequestContext;
 import com.google.gerrit.server.util.ThreadLocalRequestContext;
@@ -35,34 +38,39 @@ import com.googlesource.gerrit.plugins.rabbitmq.message.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UserEventWorker implements EventWorker {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(UserEventWorker.class);
 
-  private final EventSource source;
+  private final DynamicSet<UserScopedEventListener> eventListeners;
   private final WorkQueue workQueue;
   private final AccountResolver accountResolver;
   private final IdentifiedUser.GenericFactory userFactory;
   private final ThreadLocalRequestContext threadLocalRequestContext;
   private final PluginUser pluginUser;
   private final SchemaFactory<ReviewDb> schemaFactory;
+  private final Map<Publisher, RegistrationHandle> eventListenerRegistrations;
 
   @Inject
   public UserEventWorker(
-      EventSource source,
+      DynamicSet<UserScopedEventListener> eventListeners,
       WorkQueue workQueue,
       AccountResolver accountResolver,
       IdentifiedUser.GenericFactory userFactory,
       ThreadLocalRequestContext threadLocalRequestContext,
       PluginUser pluginUser,
       SchemaFactory<ReviewDb> schemaFactory) {
-    this.source = source;
+    this.eventListeners = eventListeners;
     this.workQueue = workQueue;
     this.accountResolver = accountResolver;
     this.userFactory = userFactory;
     this.threadLocalRequestContext = threadLocalRequestContext;
     this.pluginUser = pluginUser;
     this.schemaFactory = schemaFactory;
+    eventListenerRegistrations = new HashMap<>();
   }
 
   @Override
@@ -109,9 +117,19 @@ public class UserEventWorker implements EventWorker {
             LOGGER.error("No single user could be found when searching for listenAs: {}", userName);
             return;
           }
-
-          IdentifiedUser user = userFactory.create(userAccount.getId());
-          source.addEventListener(publisher, user);
+          final IdentifiedUser user = userFactory.create(userAccount.getId());
+          RegistrationHandle registration =
+              eventListeners.add(new UserScopedEventListener() {
+                @Override
+                public void onEvent(Event event) {
+                  publisher.onEvent(event);
+                }
+                @Override
+                public CurrentUser getUser() {
+                  return user;
+                }
+              });
+          eventListenerRegistrations.put(publisher, registration);
           LOGGER.info("Listen events as : {}", userName);
         } catch (OrmException e) {
           LOGGER.error("Could not query database for listenAs", e);
@@ -129,7 +147,11 @@ public class UserEventWorker implements EventWorker {
 
   @Override
   public void removePublisher(final Publisher publisher) {
-    source.removeEventListener(publisher);
+    RegistrationHandle registration =
+        eventListenerRegistrations.remove(publisher);
+    if (registration != null) {
+      registration.remove();
+    }
   }
 
   @Override
