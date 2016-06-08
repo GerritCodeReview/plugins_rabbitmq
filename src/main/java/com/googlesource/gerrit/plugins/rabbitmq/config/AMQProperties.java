@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.rabbitmq.config;
 
 import com.google.gerrit.common.TimeUtil;
+
 import com.googlesource.gerrit.plugins.rabbitmq.annotation.MessageHeader;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Message;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Section;
