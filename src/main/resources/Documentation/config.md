@@ -13,6 +13,18 @@ Connection to RabbitMQ will be established for each files.
 If `rabbitmq.config` exists in `$site_path/data/rabbitmq`, it is loaded at first.
 It means that this is default for all config files.
 
+
+Secure.config
+---------------------
+
+If amqp.<username>.password is specified in `$site_path/etc/secure.config`. This
+password is used when trying to connect to amqp with username = <username>.
+
+```
+  [amqp "guest"]
+    password = guest
+```
+
 File format
 ---------------------
 
