@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "23a2e411_ae873720",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1021683
+      },
+      "writtenOn": "2016-06-08T12:24:45Z",
+      "side": 1,
+      "message": "Missing end quote? And shouldn\u0027t the opening quote be a backtick?",
+      "range": {
+        "startLine": 20,
+        "startChar": 44,
+        "endLine": 20,
+        "endChar": 73
+      },
+      "revId": "3ea3a2d118a85aa6cdd2beb6ae8bbcdd435894df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
