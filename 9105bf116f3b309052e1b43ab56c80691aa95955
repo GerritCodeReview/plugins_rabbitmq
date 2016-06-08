@@ -48,6 +48,54 @@
     },
     {
       "key": {
+        "uuid": "83b1d059_d1afc487",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/session/type/AMQPSession.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1014252
+      },
+      "writtenOn": "2016-06-08T12:17:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83b1d059_b1b040ec",
+      "range": {
+        "startLine": 157,
+        "startChar": 7,
+        "endLine": 157,
+        "endChar": 12
+      },
+      "revId": "9105bf116f3b309052e1b43ab56c80691aa95955",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "83b1d059_f1aac879",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/session/type/AMQPSession.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1014252
+      },
+      "writtenOn": "2016-06-08T12:17:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c34ca816_db2b93d7",
+      "range": {
+        "startLine": 157,
+        "startChar": 8,
+        "endLine": 157,
+        "endChar": 12
+      },
+      "revId": "9105bf116f3b309052e1b43ab56c80691aa95955",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "63b85c3e_309c486d",
         "filename": "src/main/resources/Documentation/config.md",
         "patchSetId": 1
@@ -59,6 +107,30 @@
       "writtenOn": "2016-06-08T12:14:51Z",
       "side": 1,
       "message": "nit: trailing whitespace",
+      "range": {
+        "startLine": 20,
+        "startChar": 79,
+        "endLine": 20,
+        "endChar": 80
+      },
+      "revId": "9105bf116f3b309052e1b43ab56c80691aa95955",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "633e9c4b_20236af5",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1014252
+      },
+      "writtenOn": "2016-06-08T12:17:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63b85c3e_309c486d",
       "range": {
         "startLine": 20,
         "startChar": 79,
