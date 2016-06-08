@@ -25,9 +25,9 @@ import com.googlesource.gerrit.plugins.rabbitmq.config.PropertiesFactory;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Gerrit;
 import com.googlesource.gerrit.plugins.rabbitmq.message.Publisher;
 import com.googlesource.gerrit.plugins.rabbitmq.message.PublisherFactory;
+import com.googlesource.gerrit.plugins.rabbitmq.worker.DefaultEventWorker;
 import com.googlesource.gerrit.plugins.rabbitmq.worker.EventWorker;
 import com.googlesource.gerrit.plugins.rabbitmq.worker.EventWorkerFactory;
-import com.googlesource.gerrit.plugins.rabbitmq.worker.DefaultEventWorker;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

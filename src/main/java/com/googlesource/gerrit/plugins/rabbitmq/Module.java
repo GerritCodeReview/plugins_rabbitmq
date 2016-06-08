@@ -35,9 +35,9 @@ import com.googlesource.gerrit.plugins.rabbitmq.message.Publisher;
 import com.googlesource.gerrit.plugins.rabbitmq.message.PublisherFactory;
 import com.googlesource.gerrit.plugins.rabbitmq.session.SessionFactory;
 import com.googlesource.gerrit.plugins.rabbitmq.session.SessionFactoryProvider;
+import com.googlesource.gerrit.plugins.rabbitmq.worker.DefaultEventWorker;
 import com.googlesource.gerrit.plugins.rabbitmq.worker.EventWorker;
 import com.googlesource.gerrit.plugins.rabbitmq.worker.EventWorkerFactory;
-import com.googlesource.gerrit.plugins.rabbitmq.worker.DefaultEventWorker;
 import com.googlesource.gerrit.plugins.rabbitmq.worker.UserEventWorker;
 
 class Module extends AbstractModule {
