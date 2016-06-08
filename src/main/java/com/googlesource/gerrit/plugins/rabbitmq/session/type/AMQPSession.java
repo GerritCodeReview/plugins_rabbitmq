@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.rabbitmq.session.type;
 import com.googlesource.gerrit.plugins.rabbitmq.config.Properties;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.AMQP;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Exchange;
+import com.googlesource.gerrit.plugins.rabbitmq.config.section.Gerrit;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Message;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Monitor;
 import com.googlesource.gerrit.plugins.rabbitmq.session.Session;
@@ -148,7 +149,11 @@ public final class AMQPSession implements Session {
         if (StringUtils.isNotEmpty(amqp.username)) {
           factory.setUsername(amqp.username);
         }
-        if (StringUtils.isNotEmpty(amqp.password)) {
+        Gerrit gerrit = properties.getSection(Gerrit.class);
+        String securePassword = gerrit.getAMQPUserPassword(amqp.username);
+        if (StringUtils.isNotEmpty(securePassword)) {
+          factory.setPassword(securePassword);
+        } else if (StringUtils.isNotEmpty(amqp.password)) {
           factory.setPassword(amqp.password);
         }
         connection = factory.newConnection();

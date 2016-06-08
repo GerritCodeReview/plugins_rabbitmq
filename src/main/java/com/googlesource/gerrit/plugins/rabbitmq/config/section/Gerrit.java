@@ -24,6 +24,7 @@ import com.googlesource.gerrit.plugins.rabbitmq.annotation.MessageHeader;
 import org.eclipse.jgit.lib.Config;
 
 public class Gerrit implements Section {
+  private Config gerritConfig;
 
   @Default
   @MessageHeader("gerrit-name")
@@ -50,10 +51,15 @@ public class Gerrit implements Section {
   @Default
   public String listenAs;
 
+  public String getAMQPUserPassword(String userName) {
+    return gerritConfig.getString("AMQP", userName, "password");
+  }
+
   @Inject
   public Gerrit(final @GerritServerConfig Config config) {
     this.canonicalWebUrl = config.getString("gerrit", null, "canonicalWebUrl");
     this.version = Version.getVersion();
+    this.gerritConfig = config;
   }
 
 }
