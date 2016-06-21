@@ -17,7 +17,9 @@ package com.googlesource.gerrit.plugins.rabbitmq;
 import com.google.gerrit.common.EventListener;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gson.Gson;
 import com.google.inject.AbstractModule;
+import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.multibindings.Multibinder;
 
@@ -30,6 +32,7 @@ import com.googlesource.gerrit.plugins.rabbitmq.config.section.Gerrit;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Message;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Monitor;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Section;
+import com.googlesource.gerrit.plugins.rabbitmq.message.GsonProvider;
 import com.googlesource.gerrit.plugins.rabbitmq.message.MessagePublisher;
 import com.googlesource.gerrit.plugins.rabbitmq.message.Publisher;
 import com.googlesource.gerrit.plugins.rabbitmq.message.PublisherFactory;
@@ -56,6 +59,7 @@ class Module extends AbstractModule {
     install(new FactoryModuleBuilder().implement(Publisher.class, MessagePublisher.class).build(PublisherFactory.class));
     install(new FactoryModuleBuilder().implement(Properties.class, PluginProperties.class).build(PropertiesFactory.class));
     install(new FactoryModuleBuilder().implement(EventWorker.class, UserEventWorker.class).build(EventWorkerFactory.class));
+    bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
 
     DynamicSet.bind(binder(), LifecycleListener.class).to(Manager.class);
     DynamicSet.bind(binder(), EventListener.class).to(DefaultEventWorker.class);
