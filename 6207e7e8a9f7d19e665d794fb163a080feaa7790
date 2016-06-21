@@ -22,6 +22,30 @@
       "revId": "6207e7e8a9f7d19e665d794fb163a080feaa7790",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "095fc4cc_667aeea4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/message/GsonProvider.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2016-06-21T10:51:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "290648d0_9702646a",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 4
+      },
+      "revId": "6207e7e8a9f7d19e665d794fb163a080feaa7790",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
