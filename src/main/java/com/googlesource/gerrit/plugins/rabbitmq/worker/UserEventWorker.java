@@ -112,7 +112,7 @@ public class UserEventWorker implements EventWorker {
               }
             });
         try {
-          userAccount = accountResolver.find(userName);
+          userAccount = accountResolver.find(db, userName);
           if (userAccount == null) {
             LOGGER.error("No single user could be found when searching for listenAs: {}", userName);
             return;
