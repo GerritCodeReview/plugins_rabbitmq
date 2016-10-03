@@ -8,12 +8,12 @@ import java.nio.file.Path;
 import java.util.Set;
 
 public interface Properties extends Cloneable {
-  public Config toConfig();
-  public boolean load();
-  public boolean load(Properties baseProperties);
-  public Path getPath();
-  public String getName();
-  public Set<Section> getSections();
-  public <T extends Section> T getSection(Class<T> clazz);
-  public AMQProperties getAMQProperties();
+  Config toConfig();
+  boolean load();
+  boolean load(Properties baseProperties);
+  Path getPath();
+  String getName();
+  Set<Section> getSections();
+  <T extends Section> T getSection(Class<T> clazz);
+  AMQProperties getAMQProperties();
 }

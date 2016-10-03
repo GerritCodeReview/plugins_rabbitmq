@@ -46,7 +46,7 @@ public final class AMQPSession implements Session {
 
     private final Class<?> clazz;
 
-    public <T extends ShutdownNotifier> ShutdownListenerImpl(Class<T> clazz) {
+    <T extends ShutdownNotifier> ShutdownListenerImpl(Class<T> clazz) {
       this.clazz = clazz;
     }
 

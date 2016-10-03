@@ -27,11 +27,11 @@ import java.util.Set;
 public final class Sections {
   private static final Logger LOGGER = LoggerFactory.getLogger(Sections.class);
 
-  public static final <T extends Section> String getName(T section) {
+  public static <T extends Section> String getName(T section) {
     return section.getClass().getSimpleName().toLowerCase();
   }
 
-  public static final <T extends Section> T initialize(T section) {
+  public static <T extends Section> T initialize(T section) {
     Field[] fs = section.getClass().getFields();
     for (Field f : fs) {
       try {
@@ -56,11 +56,11 @@ public final class Sections {
     return section;
   }
 
-  public static final <T extends Section> Config toConfig(T section) {
+  public static <T extends Section> Config toConfig(T section) {
     return toConfig(section, new Config());
   }
 
-  public static final <T extends Section> Config toConfig(T section, Config config) {
+  public static <T extends Section> Config toConfig(T section, Config config) {
     Field[] fs = section.getClass().getFields();
     for (Field f : fs) {
       try {
@@ -85,7 +85,7 @@ public final class Sections {
     return config;
   }
 
-  public static final <T extends Section> Section fromConfig(T section, Config... configs) {
+  public static <T extends Section> Section fromConfig(T section, Config... configs) {
     for (Config config : configs) {
       if (config != null) {
         Set<String> names = config.getNames(getName(section));
@@ -115,7 +115,7 @@ public final class Sections {
     return section;
   }
 
-  public static final <T extends Section> T normalize(T section) {
+  public static <T extends Section> T normalize(T section) {
     Field[] fs = section.getClass().getFields();
     for (Field f : fs) {
       try {

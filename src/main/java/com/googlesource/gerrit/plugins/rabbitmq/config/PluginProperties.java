@@ -40,7 +40,7 @@ public class PluginProperties implements Properties {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(PluginProperties.class);
 
-  private final static int MINIMUM_CONNECTION_MONITOR_INTERVAL = 5000;
+  private static final int MINIMUM_CONNECTION_MONITOR_INTERVAL = 5000;
 
   private final Set<Section> sections;
   private final Path propertiesFile;

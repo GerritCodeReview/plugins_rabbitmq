@@ -35,7 +35,7 @@ public class MessagePublisher implements Publisher, LifecycleListener {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(MessagePublisher.class);
 
-  private final static int MONITOR_FIRSTTIME_DELAY = 15000;
+  private static final int MONITOR_FIRSTTIME_DELAY = 15000;
 
   private final Session session;
   private final Properties properties;

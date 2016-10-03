@@ -32,8 +32,8 @@ import java.util.Map;
 
 public class AMQProperties {
 
-  public final static String EVENT_APPID = "gerrit";
-  public final static String CONTENT_TYPE_JSON = "application/json";
+  public static final String EVENT_APPID = "gerrit";
+  public static final String CONTENT_TYPE_JSON = "application/json";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AMQProperties.class);
 
