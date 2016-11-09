@@ -14,13 +14,9 @@ gerrit_plugin(
   ],
   deps = [
     ':amqp-client',
+    ':commons-codec',
     ':commons-io',
     ':guice-multibindings',
-  ],
-  provided_deps = [
-    '//lib:gson',
-    '//lib/commons:codec',
-    '//lib/commons:lang',
   ],
 )
 
@@ -30,12 +26,11 @@ java_library(
 )
 
 maven_jar(
-  name = 'amqp-client',
-  id = 'com.rabbitmq:amqp-client:3.5.2',
-  sha1 = '8d10edd29e08f78349bd1da9d18f81c9f8b90567',
-  license = 'MPL1.1',
-  exclude_java_sources = True,
-  visibility = [],
+  name = 'commons-codec',
+  id = 'commons-codec:commons-codec:1.4',
+  sha1 = '4216af16d38465bbab0f3dff8efa14204f7a399a',
+  license = 'Apache2.0',
+  exclude = ['META-INF/LICENSE.txt', 'META-INF/NOTICE.txt'],
 )
 
 maven_jar(
@@ -43,6 +38,15 @@ maven_jar(
   id = 'commons-io:commons-io:1.4',
   sha1 = 'a8762d07e76cfde2395257a5da47ba7c1dbd3dce',
   license = 'Apache2.0',
+)
+
+maven_jar(
+  name = 'amqp-client',
+  id = 'com.rabbitmq:amqp-client:3.5.2',
+  sha1 = '8d10edd29e08f78349bd1da9d18f81c9f8b90567',
+  license = 'MPL1.1',
+  exclude_java_sources = True,
+  visibility = [],
 )
 
 maven_jar(
