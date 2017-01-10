@@ -111,7 +111,7 @@ public class UserEventWorker implements EventWorker {
           }
 
           IdentifiedUser user = userFactory.create(userAccount.getId());
-          source.addEventListener(publisher, user);
+          source.addEventListener(publisher.getEventListener(), user);
           LOGGER.info("Listen events as : {}", userName);
         } catch (OrmException e) {
           LOGGER.error("Could not query database for listenAs", e);
@@ -129,7 +129,7 @@ public class UserEventWorker implements EventWorker {
 
   @Override
   public void removePublisher(final Publisher publisher) {
-    source.removeEventListener(publisher);
+    source.removeEventListener(publisher.getEventListener());
   }
 
   @Override
