@@ -1,73 +1,37 @@
 Build
 =====
 
-This plugin is built with Buck.
+This @PLUGIN@ plugin is built with Bazel.
 
-Two build modes are supported: Standalone and in Gerrit tree. Standalone
-build mode is recommended, as this mode doesn't require local Gerrit
-tree to exist.
+Clone (or link) this plugin to the `plugins` directory of Gerrit's source tree.
 
-Build standalone
-----------------
-
-Clone bucklets library:
+Put the external dependency Bazel build file into the Gerrit /plugins directory,
+replacing the existing empty one.
 
 ```
-  git clone https://gerrit.googlesource.com/bucklets
-
-```
-and link it to rabbitmq directory:
-
-```
-  cd rabbitmq && ln -s ../bucklets .
+  cd gerrit/plugins
+  rm external_plugin_deps.bzl
+  ln -s @PLUGIN@/external_plugin_deps.bzl .
 ```
 
-Add link to the .buckversion file:
+Then issue
 
 ```
-  cd rabbitmq && ln -s bucklets/buckversion .buckversion
+  bazel build plugins/@PLUGIN@
 ```
 
-Add link to the .watchmanconfig file:
-
-```
-  cd rabbitmq && ln -s bucklets/watchmanconfig .watchmanconfig
-```
-
-To build the plugin, issue the following command:
-
-
-```
-  buck build plugin
-```
+in the root of Gerrit's source tree to build
 
 The output is created in
 
 ```
-  buck-out/gen/rabbitmq.jar
+  bazel-genfiles/plugins/@PLUGIN@/@PLUGIN@.jar
 ```
 
-Build in Gerrit tree
---------------------
-
-Clone or link this plugin to the plugins directory of Gerrit's source
-tree, and issue the command:
-
-```
-  buck build plugins/rabbitmq
-```
-
-The output is created in
-
-```
-  buck-out/gen/plugins/rabbitmq/rabbitmq.jar
-```
-
-This project can be imported into the Eclipse IDE:
+This project can be imported into the Eclipse IDE.
+Add the plugin name to the `CUSTOM_PLUGINS` set in
+Gerrit core in `tools/bzl/plugins.bzl`, and execute:
 
 ```
   ./tools/eclipse/project.py
 ```
-
-How to build the Gerrit Plugin API is described in the [Gerrit
-documentation](../../../Documentation/dev-buck.html#_extension_and_plugin_api_jar_files).
