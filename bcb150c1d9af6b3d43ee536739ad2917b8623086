@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "3aa6357c_1c7fef71",
+        "filename": "BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "2017-02-09T11:07:26Z",
+      "side": 1,
+      "message": "Thanks, done.",
+      "parentUuid": "40fcb8ac_75146a5e",
+      "range": {
+        "startLine": 12,
+        "startChar": 8,
+        "endLine": 12,
+        "endChar": 42
+      },
+      "revId": "bcb150c1d9af6b3d43ee536739ad2917b8623086",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "670d2274_5fa9e464",
         "filename": "BUILD",
         "patchSetId": 4
@@ -36,6 +60,30 @@
       "writtenOn": "2017-02-09T09:10:21Z",
       "side": 1,
       "message": "Please, sort this list alphabetically, or let buildifier do it for you.",
+      "range": {
+        "startLine": 14,
+        "startChar": 4,
+        "endLine": 14,
+        "endChar": 12
+      },
+      "revId": "bcb150c1d9af6b3d43ee536739ad2917b8623086",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "748b8c9c_a7cf0fe7",
+        "filename": "BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "2017-02-09T11:07:26Z",
+      "side": 1,
+      "message": "Thanks, done.",
+      "parentUuid": "670d2274_5fa9e464",
       "range": {
         "startLine": 14,
         "startChar": 4,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "fe2c545c_957829f9",
+        "filename": "BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "2017-02-09T11:07:26Z",
+      "side": 1,
+      "message": "Thanks, done.",
+      "parentUuid": "e021b00c_09b004ae",
+      "range": {
+        "startLine": 15,
+        "startChar": 8,
+        "endLine": 15,
+        "endChar": 45
+      },
+      "revId": "bcb150c1d9af6b3d43ee536739ad2917b8623086",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0dd4c178_186fb4a9",
         "filename": "BUILD",
         "patchSetId": 4
@@ -82,6 +154,30 @@
       "writtenOn": "2017-02-09T09:10:21Z",
       "side": 1,
       "message": "Remove it.",
+      "range": {
+        "startLine": 17,
+        "startChar": 8,
+        "endLine": 17,
+        "endChar": 53
+      },
+      "revId": "bcb150c1d9af6b3d43ee536739ad2917b8623086",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b6cb199c_f0f70b54",
+        "filename": "BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "2017-02-09T11:07:26Z",
+      "side": 1,
+      "message": "Thanks, done.",
+      "parentUuid": "0dd4c178_186fb4a9",
       "range": {
         "startLine": 17,
         "startChar": 8,
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "42a96865_4340403e",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "2017-02-09T11:07:26Z",
+      "side": 1,
+      "message": "Thanks, done.",
+      "parentUuid": "deb4cbae_0852fe14",
+      "range": {
+        "startLine": 5,
+        "startChar": 12,
+        "endLine": 5,
+        "endChar": 23
+      },
+      "revId": "bcb150c1d9af6b3d43ee536739ad2917b8623086",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "40c7bbdd_5a77fd28",
         "filename": "external_plugin_deps.bzl",
         "patchSetId": 4
@@ -128,6 +248,30 @@
       "writtenOn": "2017-02-09T09:10:21Z",
       "side": 1,
       "message": "This is nowadays is part of Gerrit core and is exposed in the plugin API, see gerrit-plugin-api/BUILD#29:\n\n  \"//lib/guice:multibindings\",\n\nremove.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 3
+      },
+      "revId": "bcb150c1d9af6b3d43ee536739ad2917b8623086",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "619d7ac3_18ea3a84",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "2017-02-09T11:07:26Z",
+      "side": 1,
+      "message": "Thanks, done.",
+      "parentUuid": "40c7bbdd_5a77fd28",
       "range": {
         "startLine": 10,
         "startChar": 0,
@@ -157,6 +301,24 @@
     },
     {
       "key": {
+        "uuid": "5398dd0d_4087f10e",
+        "filename": "lib/BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "2017-02-09T11:07:26Z",
+      "side": 1,
+      "message": "Thanks, done.",
+      "parentUuid": "f9d37c3e_319457d3",
+      "revId": "bcb150c1d9af6b3d43ee536739ad2917b8623086",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "33393ad9_e5148d6a",
         "filename": "lib/BUILD",
         "patchSetId": 4
@@ -168,6 +330,30 @@
       "writtenOn": "2017-02-09T09:10:21Z",
       "side": 1,
       "message": "Not needed.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 1
+      },
+      "revId": "bcb150c1d9af6b3d43ee536739ad2917b8623086",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0e34d652_b6c1b819",
+        "filename": "lib/BUILD",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "2017-02-09T11:07:26Z",
+      "side": 1,
+      "message": "I\u0027ve removed the file, thanks, done",
+      "parentUuid": "33393ad9_e5148d6a",
       "range": {
         "startLine": 8,
         "startChar": 0,
