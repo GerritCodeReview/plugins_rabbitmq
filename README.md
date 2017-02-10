@@ -15,14 +15,14 @@ This is Gerrit plugin.
 This can publish gerrit events to message queue provided by RabbitMQ.
 Published events are the same as Gerrit stream evnets.
 
-This plugin works on Gerrit 2.8 - 2.10.
+This plugin works on Gerrit 2.8 - 2.13.
 
 Environments
 ---------------------
 
 * `linux`
-* `java-1.7`
-* `Buck`
+* `java-1.8`
+* `Bazel`
 
 Build
 ---------------------
@@ -31,11 +31,11 @@ Clone or link this plugin to the plugins directory of Gerrit's source
 tree, and issue the command:
 
 
-    buck build plugins/rabbitmq
+    bazel build plugins/rabbitmq
 
 The output is created in
 
-    buck-out/gen/plugins/rabbitmq/rabbitmq.jar
+    bazel-genfiles/plugins/rabbitmq/rabbitmq.jar
 
 Reference
 ---------------------
