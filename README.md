@@ -22,7 +22,7 @@ Environments
 
 * `linux`
 * `java-1.7`
-* `Buck`
+* `Bazel`
 
 Build
 ---------------------
@@ -31,11 +31,11 @@ Clone or link this plugin to the plugins directory of Gerrit's source
 tree, and issue the command:
 
 
-    buck build plugins/rabbitmq
+    bazel build plugins/rabbitmq
 
 The output is created in
 
-    buck-out/gen/plugins/rabbitmq/rabbitmq.jar
+    bazel-genfiles/plugins/rabbitmq/rabbitmq.jar
 
 Reference
 ---------------------
