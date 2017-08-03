@@ -1,15 +1,6 @@
-work/
-buck-out/
-bucklets
-build/
-bin/
-target/
-.buckd/
-.buckversion
 .classpath
 .checkstyle
 .project
 .settings/
 .idea/
-.watchmanconfig
 *.iml
