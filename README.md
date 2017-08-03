@@ -18,25 +18,14 @@ Environments
 * `java-1.8`
 * `Bazel`
 
-Build
----------------------
-
-Clone or link this plugin to the plugins directory of Gerrit's source
-tree, and issue the command:
-
-
-    bazel build plugins/rabbitmq
-
-The output is created in
-
-    bazel-genfiles/plugins/rabbitmq/rabbitmq.jar
-
 Reference
 ---------------------
 
+* [Build]
 * [Configuration]
 * [Message Format]
 
+[Build]: src/main/resources/Documentation/build.md
 [Configuration]: src/main/resources/Documentation/config.md
 [Message Format]: src/main/resources/Documentation/message.md
 
