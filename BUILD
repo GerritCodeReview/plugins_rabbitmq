@@ -13,7 +13,7 @@ gerrit_plugin(
     deps = [
         "@amqp_client//jar",
         "@commons_codec//jar:neverlink",
-        "@commons_io//jar:neverlink",
+        "@commons_io//jar",
         "@commons_lang//jar:neverlink",
         "@gson//jar:neverlink",
     ],
