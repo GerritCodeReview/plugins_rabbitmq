@@ -33,8 +33,10 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
 import com.googlesource.gerrit.plugins.rabbitmq.message.Publisher;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -135,7 +137,7 @@ public class UserEventWorker implements EventWorker {
                           });
                   eventListenerRegistrations.put(publisher, registration);
                   LOGGER.info("Listen events as : {}", userName);
-                } catch (OrmException e) {
+                } catch (OrmException | ConfigInvalidException | IOException e) {
                   LOGGER.error("Could not query database for listenAs", e);
                   return;
                 } finally {
