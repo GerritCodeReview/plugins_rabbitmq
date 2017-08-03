@@ -122,7 +122,7 @@ public class UserEventWorker implements EventWorker {
               eventListeners.add(new UserScopedEventListener() {
                 @Override
                 public void onEvent(Event event) {
-                  publisher.onEvent(event);
+                  publisher.getEventListener().onEvent(event);
                 }
                 @Override
                 public CurrentUser getUser() {
