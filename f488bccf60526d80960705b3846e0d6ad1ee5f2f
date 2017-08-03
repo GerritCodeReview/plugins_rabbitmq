@@ -16,6 +16,24 @@
       "revId": "f488bccf60526d80960705b3846e0d6ad1ee5f2f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "43d4309c_e4bb43b1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-08-03T10:49:33Z",
+      "side": 1,
+      "message": "The reason it is need is because, commons-io is not provided in gerrit.war. Yes, it is specified in WORKSPACE file and in lib package, but only to provide it for replication plugin. So yes, every plugin that needs it must shade it in final artefact.",
+      "parentUuid": "0e1bfa77_89987043",
+      "revId": "f488bccf60526d80960705b3846e0d6ad1ee5f2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
