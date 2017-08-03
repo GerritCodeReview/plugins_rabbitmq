@@ -8,7 +8,7 @@ gerrit_plugin(
         "Gerrit-PluginName: rabbitmq",
         "Gerrit-Module: com.googlesource.gerrit.plugins.rabbitmq.Module",
         "Implementation-Title: Gerrit rabbitmq plugin",
-        "Implementation-URL: https://github.com/rinrinne/gerrit-rabbitmq-plugin",
+        "Implementation-URL: https://gerrit-review.googlesource.com/#/admin/projects/plugins/rabbitmq",
     ],
     deps = [
         "@amqp_client//jar",
