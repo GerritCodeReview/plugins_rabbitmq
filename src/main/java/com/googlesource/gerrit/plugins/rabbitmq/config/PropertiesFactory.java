@@ -18,5 +18,6 @@ import java.nio.file.Path;
 
 public interface PropertiesFactory {
   Properties create();
+
   Properties create(Path propertiesFile);
 }

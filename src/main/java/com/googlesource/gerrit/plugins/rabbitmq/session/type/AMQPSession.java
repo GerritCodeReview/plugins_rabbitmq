@@ -27,18 +27,16 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.ShutdownListener;
 import com.rabbitmq.client.ShutdownNotifier;
 import com.rabbitmq.client.ShutdownSignalException;
-
-import org.apache.commons.codec.CharEncoding;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.apache.commons.codec.CharEncoding;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class AMQPSession implements Session {
 
@@ -65,8 +63,8 @@ public final class AMQPSession implements Session {
             if (cause.isInitiatedByApplication()) {
               LOGGER.info(MSG("Channel #{} closed by application."), ch.getChannelNumber());
             } else {
-              LOGGER.warn(MSG("Channel #{} closed. Cause: {}"),
-                ch.getChannelNumber(), cause.getMessage());
+              LOGGER.warn(
+                  MSG("Channel #{} closed. Cause: {}"), ch.getChannelNumber(), cause.getMessage());
             }
             if (ch.equals(AMQPSession.this.channel)) {
               AMQPSession.this.channel = null;
@@ -205,7 +203,9 @@ public final class AMQPSession implements Session {
       Exchange exchange = properties.getSection(Exchange.class);
       try {
         LOGGER.debug(MSG("Sending message."));
-        channel.basicPublish(exchange.name, message.routingKey,
+        channel.basicPublish(
+            exchange.name,
+            message.routingKey,
             properties.getAMQProperties().getBasicProperties(),
             messageBody.getBytes(CharEncoding.UTF_8));
       } catch (IOException ex) {

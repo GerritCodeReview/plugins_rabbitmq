@@ -24,6 +24,5 @@ public class Message implements Section {
   @Default("0")
   public Integer priority;
 
-  @Default
-  public String routingKey;
+  @Default public String routingKey;
 }

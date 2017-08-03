@@ -14,5 +14,4 @@
 
 package com.googlesource.gerrit.plugins.rabbitmq.config.section;
 
-public interface Section {
-}
+public interface Section {}

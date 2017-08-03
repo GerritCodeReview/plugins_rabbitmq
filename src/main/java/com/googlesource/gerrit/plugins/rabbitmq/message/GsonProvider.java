@@ -24,7 +24,6 @@ public class GsonProvider implements Provider<Gson> {
 
   @Override
   public Gson get() {
-    return new GsonBuilder().registerTypeAdapter(Supplier.class,
-        new SupplierSerializer()).create();
+    return new GsonBuilder().registerTypeAdapter(Supplier.class, new SupplierSerializer()).create();
   }
 }

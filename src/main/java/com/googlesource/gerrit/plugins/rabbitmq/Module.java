@@ -22,7 +22,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.multibindings.Multibinder;
-
 import com.googlesource.gerrit.plugins.rabbitmq.config.PluginProperties;
 import com.googlesource.gerrit.plugins.rabbitmq.config.Properties;
 import com.googlesource.gerrit.plugins.rabbitmq.config.PropertiesFactory;
@@ -56,9 +55,18 @@ class Module extends AbstractModule {
     sectionBinder.addBinding().to(Message.class);
     sectionBinder.addBinding().to(Monitor.class);
 
-    install(new FactoryModuleBuilder().implement(Publisher.class, MessagePublisher.class).build(PublisherFactory.class));
-    install(new FactoryModuleBuilder().implement(Properties.class, PluginProperties.class).build(PropertiesFactory.class));
-    install(new FactoryModuleBuilder().implement(EventWorker.class, UserEventWorker.class).build(EventWorkerFactory.class));
+    install(
+        new FactoryModuleBuilder()
+            .implement(Publisher.class, MessagePublisher.class)
+            .build(PublisherFactory.class));
+    install(
+        new FactoryModuleBuilder()
+            .implement(Properties.class, PluginProperties.class)
+            .build(PropertiesFactory.class));
+    install(
+        new FactoryModuleBuilder()
+            .implement(EventWorker.class, UserEventWorker.class)
+            .build(EventWorkerFactory.class));
     bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
 
     DynamicSet.bind(binder(), LifecycleListener.class).to(Manager.class);

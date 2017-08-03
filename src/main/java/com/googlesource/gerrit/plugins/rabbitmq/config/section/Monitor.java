@@ -20,7 +20,7 @@ import com.googlesource.gerrit.plugins.rabbitmq.annotation.Limit;
 public class Monitor implements Section {
 
   @Default("15000")
-  @Limit(min=5000)
+  @Limit(min = 5000)
   public Integer interval;
 
   @Default("15")

@@ -15,7 +15,10 @@ package com.googlesource.gerrit.plugins.rabbitmq.session;
 
 public interface Session {
   boolean isOpen();
+
   void connect();
+
   void disconnect();
+
   void publish(String message);
 }

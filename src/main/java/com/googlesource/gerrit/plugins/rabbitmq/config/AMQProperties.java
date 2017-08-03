@@ -15,20 +15,17 @@
 package com.googlesource.gerrit.plugins.rabbitmq.config;
 
 import com.google.gerrit.common.TimeUtil;
-
 import com.googlesource.gerrit.plugins.rabbitmq.annotation.MessageHeader;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Message;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Section;
 import com.rabbitmq.client.AMQP;
-
-import org.apache.commons.codec.CharEncoding;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.codec.CharEncoding;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AMQProperties {
 
@@ -52,7 +49,7 @@ public class AMQProperties {
             if (value == null) {
               continue;
             }
-            switch(f.getType().getSimpleName()) {
+            switch (f.getType().getSimpleName()) {
               case "String":
                 headers.put(mh.value(), value.toString());
                 break;
@@ -69,8 +66,7 @@ public class AMQProperties {
                 break;
             }
           } catch (IllegalAccessException | IllegalArgumentException ex) {
-            LOGGER.warn("Cannot access field {}. Cause: {}",
-                f.getName(), ex.getMessage());
+            LOGGER.warn("Cannot access field {}. Cause: {}", f.getName(), ex.getMessage());
           }
         }
       }
@@ -79,13 +75,13 @@ public class AMQProperties {
 
   public AMQP.BasicProperties getBasicProperties() {
     return new AMQP.BasicProperties.Builder()
-      .appId(EVENT_APPID)
-      .contentEncoding(CharEncoding.UTF_8)
-      .contentType(CONTENT_TYPE_JSON)
-      .deliveryMode(message.deliveryMode)
-      .priority(message.priority)
-      .headers(headers)
-      .timestamp(new Date(TimeUtil.nowMs()))
-      .build();
+        .appId(EVENT_APPID)
+        .contentEncoding(CharEncoding.UTF_8)
+        .contentType(CONTENT_TYPE_JSON)
+        .deliveryMode(message.deliveryMode)
+        .priority(message.priority)
+        .headers(headers)
+        .timestamp(new Date(TimeUtil.nowMs()))
+        .build();
   }
 }

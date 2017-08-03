@@ -17,10 +17,8 @@ package com.googlesource.gerrit.plugins.rabbitmq.config.section;
 import com.google.gerrit.common.Version;
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.inject.Inject;
-
 import com.googlesource.gerrit.plugins.rabbitmq.annotation.Default;
 import com.googlesource.gerrit.plugins.rabbitmq.annotation.MessageHeader;
-
 import org.eclipse.jgit.lib.Config;
 
 public class Gerrit implements Section {
@@ -48,8 +46,7 @@ public class Gerrit implements Section {
   @MessageHeader("gerrit-version")
   public String version;
 
-  @Default
-  public String listenAs;
+  @Default public String listenAs;
 
   public String getAMQPUserPassword(String userName) {
     return gerritConfig.getString("AMQP", userName, "password");
@@ -61,5 +58,4 @@ public class Gerrit implements Section {
     this.version = Version.getVersion();
     this.gerritConfig = config;
   }
-
 }

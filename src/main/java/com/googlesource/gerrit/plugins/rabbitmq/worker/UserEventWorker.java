@@ -32,14 +32,11 @@ import com.google.gwtorm.server.SchemaFactory;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
-
 import com.googlesource.gerrit.plugins.rabbitmq.message.Publisher;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UserEventWorker implements EventWorker {
 
@@ -80,75 +77,81 @@ public class UserEventWorker implements EventWorker {
 
   @Override
   public void addPublisher(final Publisher publisher, final String userName) {
-    workQueue.getDefaultQueue().submit(new Runnable() {
-      private ReviewDb db;
-      private Account userAccount;
-
-      @Override
-      public void run() {
-        RequestContext old = threadLocalRequestContext
-            .setContext(new RequestContext() {
+    workQueue
+        .getDefaultQueue()
+        .submit(
+            new Runnable() {
+              private ReviewDb db;
+              private Account userAccount;
 
               @Override
-              public CurrentUser getUser() {
-                return pluginUser;
-              }
+              public void run() {
+                RequestContext old =
+                    threadLocalRequestContext.setContext(
+                        new RequestContext() {
 
-              @Override
-              public Provider<ReviewDb> getReviewDbProvider() {
-                return new Provider<ReviewDb>() {
-                  @Override
-                  public ReviewDb get() {
-                    if (db == null) {
-                      try {
-                        db = schemaFactory.open();
-                      } catch (OrmException e) {
-                        throw new ProvisionException("Cannot open ReviewDb", e);
-                      }
-                    }
-                    return db;
+                          @Override
+                          public CurrentUser getUser() {
+                            return pluginUser;
+                          }
+
+                          @Override
+                          public Provider<ReviewDb> getReviewDbProvider() {
+                            return new Provider<ReviewDb>() {
+                              @Override
+                              public ReviewDb get() {
+                                if (db == null) {
+                                  try {
+                                    db = schemaFactory.open();
+                                  } catch (OrmException e) {
+                                    throw new ProvisionException("Cannot open ReviewDb", e);
+                                  }
+                                }
+                                return db;
+                              }
+                            };
+                          }
+                        });
+                try {
+                  userAccount = accountResolver.find(db, userName);
+                  if (userAccount == null) {
+                    LOGGER.error(
+                        "No single user could be found when searching for listenAs: {}", userName);
+                    return;
                   }
-                };
+                  final IdentifiedUser user = userFactory.create(userAccount.getId());
+                  RegistrationHandle registration =
+                      eventListeners.add(
+                          new UserScopedEventListener() {
+                            @Override
+                            public void onEvent(Event event) {
+                              publisher.getEventListener().onEvent(event);
+                            }
+
+                            @Override
+                            public CurrentUser getUser() {
+                              return user;
+                            }
+                          });
+                  eventListenerRegistrations.put(publisher, registration);
+                  LOGGER.info("Listen events as : {}", userName);
+                } catch (OrmException e) {
+                  LOGGER.error("Could not query database for listenAs", e);
+                  return;
+                } finally {
+                  threadLocalRequestContext.setContext(old);
+                  if (db != null) {
+                    db.close();
+                    db = null;
+                  }
+                }
               }
             });
-        try {
-          userAccount = accountResolver.find(db, userName);
-          if (userAccount == null) {
-            LOGGER.error("No single user could be found when searching for listenAs: {}", userName);
-            return;
-          }
-          final IdentifiedUser user = userFactory.create(userAccount.getId());
-          RegistrationHandle registration =
-              eventListeners.add(new UserScopedEventListener() {
-                @Override
-                public void onEvent(Event event) {
-                  publisher.getEventListener().onEvent(event);
-                }
-                @Override
-                public CurrentUser getUser() {
-                  return user;
-                }
-              });
-          eventListenerRegistrations.put(publisher, registration);
-          LOGGER.info("Listen events as : {}", userName);
-        } catch (OrmException e) {
-          LOGGER.error("Could not query database for listenAs", e);
-          return;
-        } finally {
-          threadLocalRequestContext.setContext(old);
-          if (db != null) {
-            db.close();
-            db = null;
-          }
-        }
-      }
-    });
   }
 
   @Override
   public void removePublisher(final Publisher publisher) {
-    RegistrationHandle registration =
-        eventListenerRegistrations.remove(publisher);
+    RegistrationHandle registration = eventListenerRegistrations.remove(publisher);
     if (registration != null) {
       registration.remove();
     }

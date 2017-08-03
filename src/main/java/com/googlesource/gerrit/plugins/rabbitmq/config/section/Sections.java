@@ -16,13 +16,11 @@ package com.googlesource.gerrit.plugins.rabbitmq.config.section;
 
 import com.googlesource.gerrit.plugins.rabbitmq.annotation.Default;
 import com.googlesource.gerrit.plugins.rabbitmq.annotation.Limit;
-
+import java.lang.reflect.Field;
+import java.util.Set;
 import org.eclipse.jgit.lib.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.Field;
-import java.util.Set;
 
 public final class Sections {
   private static final Logger LOGGER = LoggerFactory.getLogger(Sections.class);
@@ -49,8 +47,7 @@ public final class Sections {
           }
         }
       } catch (IllegalAccessException ex) {
-        LOGGER.warn("Cannot access field {}. Cause: {}",
-            f.getName(), ex.getMessage());
+        LOGGER.warn("Cannot access field {}. Cause: {}", f.getName(), ex.getMessage());
       }
     }
     return section;
@@ -78,8 +75,7 @@ public final class Sections {
           }
         }
       } catch (IllegalAccessException ex) {
-        LOGGER.warn("Cannot access field {}. Cause: {}",
-            f.getName(), ex.getMessage());
+        LOGGER.warn("Cannot access field {}. Cause: {}", f.getName(), ex.getMessage());
       }
     }
     return config;
@@ -106,8 +102,7 @@ public final class Sections {
               }
             }
           } catch (IllegalAccessException ex) {
-            LOGGER.warn("Cannot access field {}. Cause: {}",
-                f.getName(), ex.getMessage());
+            LOGGER.warn("Cannot access field {}. Cause: {}", f.getName(), ex.getMessage());
           }
         }
       }
@@ -134,8 +129,7 @@ public final class Sections {
           }
         }
       } catch (IllegalAccessException ex) {
-        LOGGER.warn("Cannot access field {}. Cause: {}",
-            f.getName(), ex.getMessage());
+        LOGGER.warn("Cannot access field {}. Cause: {}", f.getName(), ex.getMessage());
       }
     }
     return section;

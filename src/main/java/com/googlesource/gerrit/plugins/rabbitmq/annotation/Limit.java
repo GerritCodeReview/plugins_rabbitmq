@@ -22,5 +22,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Limit {
   int max() default -1;
+
   int min() default -1;
 }
