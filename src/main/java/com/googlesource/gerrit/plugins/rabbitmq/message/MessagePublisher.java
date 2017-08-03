@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.rabbitmq.message;
 
+import com.google.gerrit.common.EventListener;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.server.events.Event;
 import com.google.gson.Gson;
@@ -21,15 +22,20 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import com.googlesource.gerrit.plugins.rabbitmq.config.Properties;
+import com.googlesource.gerrit.plugins.rabbitmq.config.section.AMQP;
+import com.googlesource.gerrit.plugins.rabbitmq.config.section.Gerrit;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Monitor;
 import com.googlesource.gerrit.plugins.rabbitmq.session.Session;
 import com.googlesource.gerrit.plugins.rabbitmq.session.SessionFactoryProvider;
+import com.google.gerrit.server.git.WorkQueue.CancelableRunnable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class MessagePublisher implements Publisher, LifecycleListener {
 
@@ -37,24 +43,84 @@ public class MessagePublisher implements Publisher, LifecycleListener {
 
   private static final int MONITOR_FIRSTTIME_DELAY = 15000;
 
+  private static final int MAX_EVENTS = 16384;
   private final Session session;
   private final Properties properties;
   private final Gson gson;
   private final Timer monitorTimer = new Timer();
   private boolean available = true;
+  private EventListener eventListener;
+  private final LinkedBlockingQueue<Event> queue =
+      new LinkedBlockingQueue<>(MAX_EVENTS);
+  private CancelableRunnable publisher;
+  private Thread publisherThread;
 
   @Inject
   public MessagePublisher(
-      @Assisted Properties properties,
+      @Assisted final Properties properties,
       SessionFactoryProvider sessionFactoryProvider,
       Gson gson) {
     this.session = sessionFactoryProvider.get().create(properties);
     this.properties = properties;
     this.gson = gson;
+    this.eventListener = new EventListener() {
+      @Override
+      public void onEvent(Event event) {
+        try {
+          if (!publisherThread.isAlive()) {
+            publisherThread.start();
+          }
+          queue.put(event);
+        } catch (InterruptedException e) {
+          LOGGER.warn("Failed to queue event", e);
+        }
+      }
+    };
+    this.publisher = new CancelableRunnable() {
+
+      boolean canceled = false;
+
+      @Override
+      public void run() {
+        while (!canceled) {
+          try {
+            if (isEnable() && session.isOpen()) {
+              Event event = queue.poll(200, TimeUnit.MILLISECONDS);
+              if (event != null) {
+                if (isEnable() && session.isOpen()) {
+                  publishEvent(event);
+                } else {
+                  queue.put(event);
+                }
+              }
+            } else {
+              Thread.sleep(1000);
+            }
+          } catch (InterruptedException e) {
+            LOGGER.warn("Interupted while taking event", e);
+          }
+        }
+      }
+
+      @Override
+      public void cancel() {
+        this.canceled = true;
+      }
+
+      @Override
+      public String toString() {
+        return "Rabbitmq publisher: "
+            + properties.getSection(Gerrit.class).listenAs
+            + "-"
+            + properties.getSection(AMQP.class).uri;
+      }
+    };
   }
 
   @Override
   public void start() {
+    publisherThread = new Thread(publisher);
+    publisherThread.start();
     if (!session.isOpen()) {
       session.connect();
       monitorTimer.schedule(new TimerTask() {
@@ -73,15 +139,16 @@ public class MessagePublisher implements Publisher, LifecycleListener {
   @Override
   public void stop() {
     monitorTimer.cancel();
+    publisher.cancel();
+    if (publisherThread != null) {
+      try {
+        publisherThread.join();
+      } catch (InterruptedException e) {
+        // Do nothing
+      }
+    }
     session.disconnect();
     available = false;
-  }
-
-  @Override
-  public void onEvent(Event event) {
-    if (available && session.isOpen()) {
-      session.publish(gson.toJson(event));
-    }
   }
 
   @Override
@@ -112,5 +179,14 @@ public class MessagePublisher implements Publisher, LifecycleListener {
   @Override
   public String getName() {
     return properties.getName();
+  }
+
+  @Override
+  public EventListener getEventListener() {
+    return this.eventListener;
+  }
+
+  private void publishEvent(Event event) {
+    session.publish(gson.toJson(event));
   }
 }
