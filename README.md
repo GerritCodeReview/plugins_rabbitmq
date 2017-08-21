@@ -4,12 +4,8 @@ gerrit-rabbitmq-plugin: Gerrit event publish plugin via RabbitMQ
 Synopsis
 ----------------------
 
-This is Gerrit plugin.
-
-This can publish gerrit events to message queue provided by RabbitMQ.
-Published events are the same as Gerrit stream evnets.
-
-This plugin works on Gerrit 2.8 - 2.13.
+Publish gerrit stream events to a RabbitMQ queue.
+This plugin works with any version of Gerrit starting from v2.8.
 
 Environments
 ---------------------
