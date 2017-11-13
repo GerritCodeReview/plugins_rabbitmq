@@ -15,6 +15,8 @@
 package com.googlesource.gerrit.plugins.rabbitmq.message;
 
 import com.google.common.base.Supplier;
+import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.server.events.ProjectNameKeySerializer;
 import com.google.gerrit.server.events.SupplierSerializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,6 +26,9 @@ public class GsonProvider implements Provider<Gson> {
 
   @Override
   public Gson get() {
-    return new GsonBuilder().registerTypeAdapter(Supplier.class, new SupplierSerializer()).create();
+    return new GsonBuilder()
+            .registerTypeAdapter(Supplier.class, new SupplierSerializer())
+            .registerTypeAdapter(Project.NameKey.class, new ProjectNameKeySerializer())
+            .create();
   }
 }
