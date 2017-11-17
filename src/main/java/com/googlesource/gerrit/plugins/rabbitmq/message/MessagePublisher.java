@@ -30,7 +30,7 @@ import com.googlesource.gerrit.plugins.rabbitmq.session.SessionFactoryProvider;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,15 +61,18 @@ public class MessagePublisher implements Publisher, LifecycleListener {
     this.gson = gson;
     this.eventListener =
         new EventListener() {
+          private int lostEventCount = 0;
+
           @Override
           public void onEvent(Event event) {
-            try {
-              if (!publisherThread.isAlive()) {
-                publisherThread.start();
-              }
-              queue.put(event);
-            } catch (InterruptedException e) {
-              LOGGER.warn("Failed to queue event", e);
+            if (!publisherThread.isAlive()) {
+              publisherThread.start();
+            }
+            if (queue.offer(event) && lostEventCount > 0) {
+                LOGGER.warn("Event queue is no longer full, {} events were lost", lostEventCount);
+                lostEventCount = 0;
+            } else if (lostEventCount % 10 == 0) {
+                LOGGER.error("Event queue is full, lost {} event(s)", lostEventCount);
             }
           }
         };
@@ -83,19 +86,15 @@ public class MessagePublisher implements Publisher, LifecycleListener {
             while (!canceled) {
               try {
                 if (isEnable() && session.isOpen()) {
-                  Event event = queue.poll(200, TimeUnit.MILLISECONDS);
+                  Event event = queue.poll();
                   if (event != null) {
-                    if (isEnable() && session.isOpen()) {
-                      publishEvent(event);
-                    } else {
-                      queue.put(event);
-                    }
+                    publishEvent(event);
                   }
                 } else {
-                  Thread.sleep(1000);
+                  queue.wait(2000);
                 }
               } catch (InterruptedException e) {
-                LOGGER.warn("Interupted while taking event", e);
+                LOGGER.warn("Interupted while waiting for event", e);
               }
             }
           }
