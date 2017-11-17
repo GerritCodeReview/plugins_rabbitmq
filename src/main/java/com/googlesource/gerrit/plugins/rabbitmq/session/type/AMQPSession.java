@@ -160,7 +160,7 @@ public final class AMQPSession implements Session {
       }
     } catch (URISyntaxException ex) {
       LOGGER.error(MSG("URI syntax error: {}"), amqp.uri);
-    } catch (IOException ex) {
+    } catch (IOException | TimeoutException ex) {
       LOGGER.error(MSG("Connection cannot be opened."), ex);
     } catch (KeyManagementException | NoSuchAlgorithmException ex) {
       LOGGER.error(MSG("Security error when opening connection."), ex);
