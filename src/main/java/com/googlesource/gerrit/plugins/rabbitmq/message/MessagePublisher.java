@@ -61,15 +61,21 @@ public class MessagePublisher implements Publisher, LifecycleListener {
     this.gson = gson;
     this.eventListener =
         new EventListener() {
+          private boolean fullQueue;
+
           @Override
           public void onEvent(Event event) {
-            try {
-              if (!publisherThread.isAlive()) {
-                publisherThread.start();
+            if (!publisherThread.isAlive()) {
+              publisherThread.start();
+            }
+            if (!queue.offer(event)) {
+              if (!fullQueue) {
+                LOGGER.error("Cannot receive events, Queue is full.");
+                fullQueue = true;
               }
-              queue.put(event);
-            } catch (InterruptedException e) {
-              LOGGER.warn("Failed to queue event", e);
+            } else if (fullQueue) {
+              LOGGER.warn("Queue is processable again");
+              fullQueue = false;
             }
           }
         };
