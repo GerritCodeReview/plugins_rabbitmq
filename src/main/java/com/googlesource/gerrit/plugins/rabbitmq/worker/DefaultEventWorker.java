@@ -14,8 +14,8 @@
 
 package com.googlesource.gerrit.plugins.rabbitmq.worker;
 
-import com.google.gerrit.common.EventListener;
 import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.EventListener;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.rabbitmq.message.Publisher;
 import java.util.Set;
