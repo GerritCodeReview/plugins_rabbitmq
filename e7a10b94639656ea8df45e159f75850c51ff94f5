@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "543c51c9_885bc732",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/message/MessagePublisher.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1021592
+      },
+      "writtenOn": "2017-11-21T13:58:34Z",
+      "side": 1,
+      "message": "Even_t_",
+      "revId": "e7a10b94639656ea8df45e159f75850c51ff94f5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "941c61ec_88c3d641",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/message/MessagePublisher.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1021592
+      },
+      "writtenOn": "2017-11-21T13:58:34Z",
+      "side": 1,
+      "message": "The negations in combinations with nested ifs makes it a bit hard to follow the flow. It would also be nice if we could track how much event data is lost. If you are worried about spamming the log too much, perhaps we can just log every 10th event?\n\n            if (queue.offer(event) \u0026\u0026 errorCounter \u003e 0) {\n               LOGGER.warn(\"Event queue is no longer full. Number of events lost since queue became full: \" + errorCounter);\n               errorCounter \u003d 0;\n            } else if (errorCounter++ % 10 \u003d\u003d 0) {\n               LOGGER.warn(\"Event queue is full. Number of events lost since queue became full: \" + errorCounter);\n            }\n\nThis would make it easier to see in the logs how many events we actually have lost.",
+      "range": {
+        "startLine": 71,
+        "startChar": 12,
+        "endLine": 79,
+        "endChar": 13
+      },
+      "revId": "e7a10b94639656ea8df45e159f75850c51ff94f5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
