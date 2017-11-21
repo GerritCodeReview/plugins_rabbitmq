@@ -46,6 +46,30 @@
       "revId": "0873e25be11b6206205cd89d9acb16792a93e3a9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e950163_969398d0",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1014252
+      },
+      "writtenOn": "2017-11-21T11:15:07Z",
+      "side": 1,
+      "message": "We can upgrade to 5.0.0 in the future...",
+      "parentUuid": "1a48905d_d0ea9dd0",
+      "range": {
+        "startLine": 6,
+        "startChar": 44,
+        "endLine": 6,
+        "endChar": 50
+      },
+      "revId": "0873e25be11b6206205cd89d9acb16792a93e3a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
