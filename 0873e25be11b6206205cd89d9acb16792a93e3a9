@@ -22,6 +22,30 @@
       "revId": "0873e25be11b6206205cd89d9acb16792a93e3a9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a48905d_d0ea9dd0",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-11-21T11:12:07Z",
+      "side": 1,
+      "message": "Because I know 4.1.1 works :)\n\n(we use it internally although not with this plugin)",
+      "parentUuid": "869bf4f3_f6140099",
+      "range": {
+        "startLine": 6,
+        "startChar": 44,
+        "endLine": 6,
+        "endChar": 50
+      },
+      "revId": "0873e25be11b6206205cd89d9acb16792a93e3a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
