@@ -14,9 +14,9 @@
 
 package com.googlesource.gerrit.plugins.rabbitmq;
 
-import com.google.gerrit.common.EventListener;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.server.events.EventListener;
 import com.google.gson.Gson;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;

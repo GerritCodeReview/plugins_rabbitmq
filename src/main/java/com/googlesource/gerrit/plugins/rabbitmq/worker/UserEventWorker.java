@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.rabbitmq.worker;
 
-import com.google.gerrit.common.UserScopedEventListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.extensions.registration.RegistrationHandle;
 import com.google.gerrit.reviewdb.client.Account;
@@ -24,6 +23,7 @@ import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.PluginUser;
 import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.UserScopedEventListener;
 import com.google.gerrit.server.git.WorkQueue;
 import com.google.gerrit.server.util.RequestContext;
 import com.google.gerrit.server.util.ThreadLocalRequestContext;
