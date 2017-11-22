@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "33e1b897_d0294ab4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/message/MessagePublisher.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1021592
+      },
+      "writtenOn": "2017-11-22T10:19:03Z",
+      "side": 1,
+      "message": "It would be nice if you got rid of the nested ifs per suggestions in PS1 (and also the additional \"lostEventCounter \u003d\u003d 1\" that spans from nestling it). This is enough:\n\n  } else if (lostEventCount++ % 10 \u003d\u003d 0) {\n      LOGGER.warn(\"Event queue is full. Number of events lost since queue became full: \" + errorCounter);\n  }\n\nThe ++ will be evaluated after the comparison is done. Which means it will log on the first lost event (which we want).",
+      "range": {
+        "startLine": 74,
+        "startChar": 14,
+        "endLine": 78,
+        "endChar": 15
+      },
+      "revId": "fd4705f4f47d69726e1d2a2e0ff611c48d59af6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
