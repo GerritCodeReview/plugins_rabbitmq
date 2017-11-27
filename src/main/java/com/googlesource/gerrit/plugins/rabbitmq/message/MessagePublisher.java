@@ -45,7 +45,6 @@ public class MessagePublisher implements Publisher, LifecycleListener {
   private final Properties properties;
   private final Gson gson;
   private final Timer monitorTimer = new Timer();
-  private boolean available = true;
   private EventListener eventListener;
   private final LinkedBlockingQueue<Event> queue = new LinkedBlockingQueue<>(MAX_EVENTS);
   private CancelableRunnable publisher;
@@ -82,10 +81,10 @@ public class MessagePublisher implements Publisher, LifecycleListener {
           public void run() {
             while (!canceled) {
               try {
-                if (isEnable() && session.isOpen()) {
+                if (isConnected()) {
                   Event event = queue.poll(200, TimeUnit.MILLISECONDS);
                   if (event != null) {
-                    if (isEnable() && session.isOpen()) {
+                    if (isConnected()) {
                       publishEvent(event);
                     } else {
                       queue.put(event);
@@ -119,13 +118,13 @@ public class MessagePublisher implements Publisher, LifecycleListener {
   public void start() {
     publisherThread = new Thread(publisher);
     publisherThread.start();
-    if (!session.isOpen()) {
+    if (!isConnected()) {
       session.connect();
       monitorTimer.schedule(
           new TimerTask() {
             @Override
             public void run() {
-              if (!session.isOpen()) {
+              if (!isConnected()) {
                 LOGGER.info("#start: try to reconnect");
                 session.connect();
               }
@@ -133,7 +132,6 @@ public class MessagePublisher implements Publisher, LifecycleListener {
           },
           MONITOR_FIRSTTIME_DELAY,
           properties.getSection(Monitor.class).interval);
-      available = true;
     }
   }
 
@@ -149,27 +147,6 @@ public class MessagePublisher implements Publisher, LifecycleListener {
       }
     }
     session.disconnect();
-    available = false;
-  }
-
-  @Override
-  public void enable() {
-    available = true;
-  }
-
-  @Override
-  public void disable() {
-    available = false;
-  }
-
-  @Override
-  public boolean isEnable() {
-    return available;
-  }
-
-  @Override
-  public Session getSession() {
-    return session;
   }
 
   @Override
@@ -185,6 +162,10 @@ public class MessagePublisher implements Publisher, LifecycleListener {
   @Override
   public EventListener getEventListener() {
     return this.eventListener;
+  }
+
+  private boolean isConnected() {
+    return session != null && session.isOpen();
   }
 
   private void publishEvent(Event event) {
