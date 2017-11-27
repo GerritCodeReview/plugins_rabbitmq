@@ -122,6 +122,7 @@ public class MessagePublisher implements Publisher, LifecycleListener {
   @Override
   public void start() {
     publisherThread = new Thread(publisher);
+    publisherThread.setName("rabbitmq-publisher");
     publisherThread.start();
     if (!isConnected()) {
       connect();
