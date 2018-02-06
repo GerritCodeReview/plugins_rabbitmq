@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "96df43c7_5c4b8657",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/message/MessagePublisher.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1059595
+      },
+      "writtenOn": "2018-02-06T11:02:15Z",
+      "side": 1,
+      "message": "Should be final",
+      "range": {
+        "startLine": 51,
+        "startChar": 2,
+        "endLine": 51,
+        "endChar": 43
+      },
+      "revId": "d155c0057e4677c90568d16c78cd5addf4d86f6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5c9331c4_40857f97",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/message/MessagePublisher.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1059595
+      },
+      "writtenOn": "2018-02-06T11:02:15Z",
+      "side": 1,
+      "message": "If we get a LifecycleListener::stop while we are disconnected, cancelled will be set to true but we will hang here waiting for a connection to rabbitmq.",
+      "range": {
+        "startLine": 92,
+        "startChar": 16,
+        "endLine": 92,
+        "endChar": 38
+      },
+      "revId": "d155c0057e4677c90568d16c78cd5addf4d86f6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "630e483a_a8b341c4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/message/MessagePublisher.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1059595
+      },
+      "writtenOn": "2018-02-06T11:02:15Z",
+      "side": 1,
+      "message": "This might take forever, see comment above on line 92.",
+      "range": {
+        "startLine": 148,
+        "startChar": 8,
+        "endLine": 148,
+        "endChar": 31
+      },
+      "revId": "d155c0057e4677c90568d16c78cd5addf4d86f6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
