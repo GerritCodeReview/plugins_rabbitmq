@@ -30,7 +30,6 @@ import com.googlesource.gerrit.plugins.rabbitmq.session.SessionFactoryProvider;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,9 +44,9 @@ public class MessagePublisher implements Publisher, LifecycleListener {
   private final Properties properties;
   private final Gson gson;
   private final Timer monitorTimer = new Timer();
-  private boolean available = true;
-  private EventListener eventListener;
   private final LinkedBlockingQueue<Event> queue = new LinkedBlockingQueue<>(MAX_EVENTS);
+  private final Object sessionMon = new Object();
+  private EventListener eventListener;
   private CancelableRunnable publisher;
   private Thread publisherThread;
 
@@ -61,15 +60,22 @@ public class MessagePublisher implements Publisher, LifecycleListener {
     this.gson = gson;
     this.eventListener =
         new EventListener() {
+          private int lostEventCount = 0;
+
           @Override
           public void onEvent(Event event) {
-            try {
-              if (!publisherThread.isAlive()) {
-                publisherThread.start();
+            if (!publisherThread.isAlive()) {
+              publisherThread.start();
+            }
+            if (queue.offer(event)) {
+              if (lostEventCount > 0) {
+                LOGGER.warn("Event queue is no longer full, {} events were lost", lostEventCount);
+                lostEventCount = 0;
               }
-              queue.put(event);
-            } catch (InterruptedException e) {
-              LOGGER.warn("Failed to queue event", e);
+            } else {
+              if (lostEventCount++ % 10 == 0) {
+                LOGGER.error("Event queue is full, lost {} event(s)", lostEventCount);
+              }
             }
           }
         };
@@ -82,20 +88,17 @@ public class MessagePublisher implements Publisher, LifecycleListener {
           public void run() {
             while (!canceled) {
               try {
-                if (isEnable() && session.isOpen()) {
-                  Event event = queue.poll(200, TimeUnit.MILLISECONDS);
-                  if (event != null) {
-                    if (isEnable() && session.isOpen()) {
-                      publishEvent(event);
-                    } else {
-                      queue.put(event);
-                    }
+                Event event = queue.take();
+                while (!isConnected() && !canceled) {
+                  synchronized (sessionMon) {
+                    sessionMon.wait(1000);
                   }
-                } else {
-                  Thread.sleep(1000);
+                }
+                if (!publishEvent(event) && !queue.offer(event)) {
+                  LOGGER.error("Event lost: {}", gson.toJson(event));
                 }
               } catch (InterruptedException e) {
-                LOGGER.warn("Interupted while taking event", e);
+                LOGGER.warn("Interupted while waiting for event or connection.", e);
               }
             }
           }
@@ -118,22 +121,22 @@ public class MessagePublisher implements Publisher, LifecycleListener {
   @Override
   public void start() {
     publisherThread = new Thread(publisher);
+    publisherThread.setName("rabbitmq-publisher");
     publisherThread.start();
-    if (!session.isOpen()) {
-      session.connect();
+    if (!isConnected()) {
+      connect();
       monitorTimer.schedule(
           new TimerTask() {
             @Override
             public void run() {
-              if (!session.isOpen()) {
+              if (!isConnected()) {
                 LOGGER.info("#start: try to reconnect");
-                session.connect();
+                connect();
               }
             }
           },
           MONITOR_FIRSTTIME_DELAY,
           properties.getSection(Monitor.class).interval);
-      available = true;
     }
   }
 
@@ -149,27 +152,6 @@ public class MessagePublisher implements Publisher, LifecycleListener {
       }
     }
     session.disconnect();
-    available = false;
-  }
-
-  @Override
-  public void enable() {
-    available = true;
-  }
-
-  @Override
-  public void disable() {
-    available = false;
-  }
-
-  @Override
-  public boolean isEnable() {
-    return available;
-  }
-
-  @Override
-  public Session getSession() {
-    return session;
   }
 
   @Override
@@ -187,7 +169,19 @@ public class MessagePublisher implements Publisher, LifecycleListener {
     return this.eventListener;
   }
 
-  private void publishEvent(Event event) {
-    session.publish(gson.toJson(event));
+  private boolean isConnected() {
+    return session != null && session.isOpen();
+  }
+
+  private boolean publishEvent(Event event) {
+    return session.publish(gson.toJson(event));
+  }
+
+  private void connect() {
+    if (!isConnected() && session.connect()) {
+      synchronized (sessionMon) {
+        sessionMon.notifyAll();
+      }
+    }
   }
 }

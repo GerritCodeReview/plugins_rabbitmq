@@ -133,10 +133,10 @@ public final class AMQPSession implements Session {
   }
 
   @Override
-  public void connect() {
+  public boolean connect() {
     if (connection != null && connection.isOpen()) {
       LOGGER.info(MSG("Already connected."));
-      return;
+      return true;
     }
     AMQP amqp = properties.getSection(AMQP.class);
     LOGGER.info(MSG("Connect to {}..."), amqp.uri);
@@ -157,6 +157,7 @@ public final class AMQPSession implements Session {
         connection = factory.newConnection();
         connection.addShutdownListener(connectionListener);
         LOGGER.info(MSG("Connection established."));
+        return true;
       }
     } catch (URISyntaxException ex) {
       LOGGER.error(MSG("URI syntax error: {}"), amqp.uri);
@@ -165,6 +166,7 @@ public final class AMQPSession implements Session {
     } catch (KeyManagementException | NoSuchAlgorithmException ex) {
       LOGGER.error(MSG("Security error when opening connection."), ex);
     }
+    return false;
   }
 
   @Override
@@ -194,7 +196,7 @@ public final class AMQPSession implements Session {
   }
 
   @Override
-  public void publish(String messageBody) {
+  public boolean publish(String messageBody) {
     if (channel == null || !channel.isOpen()) {
       channel = getChannel();
     }
@@ -208,9 +210,13 @@ public final class AMQPSession implements Session {
             message.routingKey,
             properties.getAMQProperties().getBasicProperties(),
             messageBody.getBytes(CharEncoding.UTF_8));
+        return true;
       } catch (IOException ex) {
         LOGGER.error(MSG("Error when sending meessage."), ex);
+        return false;
       }
     }
+    LOGGER.error(MSG("Cannot open channel."));
+    return false;
   }
 }
