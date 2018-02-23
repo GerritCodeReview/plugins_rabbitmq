@@ -1,6 +1,9 @@
 load("//tools/bzl:maven_jar.bzl", "maven_jar")
 
 def external_plugin_deps():
+  rabbitmq()
+
+def rabbitmq():
     maven_jar(
         name = "amqp_client",
         artifact = "com.rabbitmq:amqp-client:4.1.1",
