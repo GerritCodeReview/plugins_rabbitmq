@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a233379_db14cf0a",
+        "filename": "BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-06-12T07:53:39Z",
+      "side": 1,
+      "message": "Why is the io artifact in the main lib/BUILD rather than lib/commons/BUILD?",
+      "range": {
+        "startLine": 14,
+        "startChar": 8,
+        "endLine": 14,
+        "endChar": 27
+      },
+      "revId": "9909a20d1fe126f05700911118e5cbee9a5da14a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
