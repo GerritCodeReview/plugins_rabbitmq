@@ -22,6 +22,53 @@
       "revId": "9909a20d1fe126f05700911118e5cbee9a5da14a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f0c93851_2db875f3",
+        "filename": "BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-06-12T08:20:17Z",
+      "side": 1,
+      "message": "Good question. Is that a bug in core?",
+      "parentUuid": "7a233379_db14cf0a",
+      "range": {
+        "startLine": 14,
+        "startChar": 8,
+        "endLine": 14,
+        "endChar": 27
+      },
+      "revId": "9909a20d1fe126f05700911118e5cbee9a5da14a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c56601d3_96552630",
+        "filename": "BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2018-06-12T08:20:17Z",
+      "side": 1,
+      "message": "I\u0027m pretty sure, that these JAR are included in release.war, in which case that shouldn\u0027t be included in shaded plugin jar. The way to express non-transitive dependencies is neverlink, so that the base version was OK and should be adjuested to \"Harmonize names of repositories\" change, e.g.:\n\n  \"@commons-codec//jar:neverlink\",\n  [...]\n\nYou can test final artifact with unzip rammitmq.jar | grep commons\n\nNote that commons-io is one single exceptionand that\u0027s why it is included as transitive dependency. That is the only dependency, we put in core, that is not a part of release.war. The reason we do that is because replication plugin depeds on it.",
+      "range": {
+        "startLine": 15,
+        "startChar": 8,
+        "endLine": 17,
+        "endChar": 28
+      },
+      "revId": "9909a20d1fe126f05700911118e5cbee9a5da14a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
