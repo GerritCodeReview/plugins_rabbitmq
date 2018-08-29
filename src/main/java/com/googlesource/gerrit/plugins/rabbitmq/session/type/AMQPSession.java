@@ -21,6 +21,7 @@ import com.googlesource.gerrit.plugins.rabbitmq.config.section.Gerrit;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Message;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Monitor;
 import com.googlesource.gerrit.plugins.rabbitmq.session.Session;
+import com.rabbitmq.client.AlreadyClosedException;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -120,7 +121,7 @@ public final class AMQPSession implements Session {
         ch.addShutdownListener(channelListener);
         failureCount.set(0);
         LOGGER.info(MSG("Channel #{} opened."), ch.getChannelNumber());
-      } catch (IOException ex) {
+      } catch (IOException | AlreadyClosedException ex) {
         LOGGER.error(MSG("Failed to open channel."), ex);
         failureCount.incrementAndGet();
       }
