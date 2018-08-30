@@ -21,6 +21,7 @@ import com.googlesource.gerrit.plugins.rabbitmq.config.section.Gerrit;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Message;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Monitor;
 import com.googlesource.gerrit.plugins.rabbitmq.session.Session;
+import com.rabbitmq.client.AlreadyClosedException;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -120,7 +121,7 @@ public final class AMQPSession implements Session {
         ch.addShutdownListener(channelListener);
         failureCount.set(0);
         LOGGER.info(MSG("Channel #{} opened."), ch.getChannelNumber());
-      } catch (IOException ex) {
+      } catch (IOException | AlreadyClosedException ex) {
         LOGGER.error(MSG("Failed to open channel."), ex);
         failureCount.incrementAndGet();
       }
@@ -133,10 +134,10 @@ public final class AMQPSession implements Session {
   }
 
   @Override
-  public void connect() {
+  public boolean connect() {
     if (connection != null && connection.isOpen()) {
       LOGGER.info(MSG("Already connected."));
-      return;
+      return true;
     }
     AMQP amqp = properties.getSection(AMQP.class);
     LOGGER.info(MSG("Connect to {}..."), amqp.uri);
@@ -157,14 +158,16 @@ public final class AMQPSession implements Session {
         connection = factory.newConnection();
         connection.addShutdownListener(connectionListener);
         LOGGER.info(MSG("Connection established."));
+        return true;
       }
     } catch (URISyntaxException ex) {
       LOGGER.error(MSG("URI syntax error: {}"), amqp.uri);
-    } catch (IOException ex) {
+    } catch (IOException | TimeoutException ex) {
       LOGGER.error(MSG("Connection cannot be opened."), ex);
     } catch (KeyManagementException | NoSuchAlgorithmException ex) {
       LOGGER.error(MSG("Security error when opening connection."), ex);
     }
+    return false;
   }
 
   @Override
@@ -194,7 +197,7 @@ public final class AMQPSession implements Session {
   }
 
   @Override
-  public void publish(String messageBody) {
+  public boolean publish(String messageBody) {
     if (channel == null || !channel.isOpen()) {
       channel = getChannel();
     }
@@ -208,9 +211,13 @@ public final class AMQPSession implements Session {
             message.routingKey,
             properties.getAMQProperties().getBasicProperties(),
             messageBody.getBytes(CharEncoding.UTF_8));
+        return true;
       } catch (IOException ex) {
         LOGGER.error(MSG("Error when sending meessage."), ex);
+        return false;
       }
     }
+    LOGGER.error(MSG("Cannot open channel."));
+    return false;
   }
 }
