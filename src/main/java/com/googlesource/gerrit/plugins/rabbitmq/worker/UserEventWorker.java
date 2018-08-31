@@ -78,7 +78,8 @@ public class UserEventWorker implements EventWorker {
   }
 
   @Override
-  public void addPublisher(final Publisher publisher, final String userName) {
+  public void addPublisher(
+      final String pluginName, final Publisher publisher, final String userName) {
     workQueue
         .getDefaultQueue()
         .submit(
@@ -124,6 +125,7 @@ public class UserEventWorker implements EventWorker {
                   final IdentifiedUser user = userFactory.create(userAccount.getId());
                   RegistrationHandle registration =
                       eventListeners.add(
+                          pluginName,
                           new UserScopedEventListener() {
                             @Override
                             public void onEvent(Event event) {
