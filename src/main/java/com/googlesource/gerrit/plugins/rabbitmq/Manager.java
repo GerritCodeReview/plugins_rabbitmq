@@ -77,7 +77,7 @@ public class Manager implements LifecycleListener {
       publisher.start();
       String listenAs = properties.getSection(Gerrit.class).listenAs;
       if (!listenAs.isEmpty()) {
-        userEventWorker.addPublisher(publisher, listenAs);
+        userEventWorker.addPublisher(pluginName, publisher, listenAs);
       } else {
         defaultEventWorker.addPublisher(publisher);
       }

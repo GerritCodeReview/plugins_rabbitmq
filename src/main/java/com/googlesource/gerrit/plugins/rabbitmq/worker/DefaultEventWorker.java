@@ -36,7 +36,7 @@ public class DefaultEventWorker implements EventListener, EventWorker {
   }
 
   @Override
-  public void addPublisher(Publisher publisher, String userName) {
+  public void addPublisher(String pluginName, Publisher publisher, String userName) {
     LOGGER.warn("addPublisher() with username '{}' was called. Hence no operation.", userName);
   }
 
