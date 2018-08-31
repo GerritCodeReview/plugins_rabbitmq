@@ -16,6 +16,24 @@
       "revId": "37ba1dc6c23bcec94478d085c584fd728c00afc7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8fb37038_f4e1432f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/worker/UserEventWorker.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1014252
+      },
+      "writtenOn": "2018-08-31T07:50:04Z",
+      "side": 1,
+      "message": "Doh...",
+      "parentUuid": "60c45a1a_86b60745",
+      "revId": "37ba1dc6c23bcec94478d085c584fd728c00afc7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
