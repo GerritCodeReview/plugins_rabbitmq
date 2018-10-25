@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.rabbitmq.message;
 
+import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
@@ -30,12 +31,10 @@ import com.googlesource.gerrit.plugins.rabbitmq.session.SessionFactoryProvider;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class MessagePublisher implements Publisher, LifecycleListener {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(MessagePublisher.class);
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private static final int MONITOR_FIRSTTIME_DELAY = 15000;
 
@@ -69,12 +68,13 @@ public class MessagePublisher implements Publisher, LifecycleListener {
             }
             if (queue.offer(event)) {
               if (lostEventCount > 0) {
-                LOGGER.warn("Event queue is no longer full, {} events were lost", lostEventCount);
+                logger.atWarning().log(
+                    "Event queue is no longer full, %s events were lost", lostEventCount);
                 lostEventCount = 0;
               }
             } else {
               if (lostEventCount++ % 10 == 0) {
-                LOGGER.error("Event queue is full, lost {} event(s)", lostEventCount);
+                logger.atSevere().log("Event queue is full, lost %s event(s)", lostEventCount);
               }
             }
           }
@@ -95,10 +95,11 @@ public class MessagePublisher implements Publisher, LifecycleListener {
                   }
                 }
                 if (!publishEvent(event) && !queue.offer(event)) {
-                  LOGGER.error("Event lost: {}", gson.toJson(event));
+                  logger.atSevere().log("Event lost: %s", gson.toJson(event));
                 }
               } catch (InterruptedException e) {
-                LOGGER.warn("Interupted while waiting for event or connection.", e);
+                logger.atWarning().withCause(e).log(
+                    "Interupted while waiting for event or connection.");
               }
             }
           }
@@ -130,7 +131,7 @@ public class MessagePublisher implements Publisher, LifecycleListener {
             @Override
             public void run() {
               if (!isConnected()) {
-                LOGGER.info("#start: try to reconnect");
+                logger.atInfo().log("#start: try to reconnect");
                 connect();
               }
             }

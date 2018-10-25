@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.rabbitmq.session.type;
 
+import com.google.common.flogger.FluentLogger;
 import com.googlesource.gerrit.plugins.rabbitmq.config.Properties;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.AMQP;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Exchange;
@@ -36,10 +37,9 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public final class AMQPSession implements Session {
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private class ShutdownListenerImpl implements ShutdownListener {
 
@@ -62,10 +62,10 @@ public final class AMQPSession implements Session {
           if (clazz == Channel.class) {
             Channel ch = Channel.class.cast(obj);
             if (cause.isInitiatedByApplication()) {
-              LOGGER.info(MSG("Channel #{} closed by application."), ch.getChannelNumber());
+              logger.atInfo().log(MSG("Channel #%s closed by application."), ch.getChannelNumber());
             } else {
-              LOGGER.warn(
-                  MSG("Channel #{} closed. Cause: {}"), ch.getChannelNumber(), cause.getMessage());
+              logger.atWarning().log(
+                  MSG("Channel #%sclosed. Cause: %s"), ch.getChannelNumber(), cause.getMessage());
             }
             if (ch.equals(AMQPSession.this.channel)) {
               AMQPSession.this.channel = null;
@@ -73,9 +73,9 @@ public final class AMQPSession implements Session {
           } else if (clazz == Connection.class) {
             Connection conn = Connection.class.cast(obj);
             if (cause.isInitiatedByApplication()) {
-              LOGGER.info(MSG("Connection closed by application."));
+              logger.atInfo().log(MSG("Connection closed by application."));
             } else {
-              LOGGER.warn(MSG("Connection closed. Cause: {}"), cause.getMessage());
+              logger.atWarning().log(MSG("Connection closed. Cause: %s"), cause.getMessage());
             }
             if (conn.equals(AMQPSession.this.connection)) {
               AMQPSession.this.connection = null;
@@ -86,7 +86,6 @@ public final class AMQPSession implements Session {
     }
   }
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(AMQPSession.class);
   private final Properties properties;
   private volatile Connection connection;
   private volatile Channel channel;
@@ -120,13 +119,13 @@ public final class AMQPSession implements Session {
         ch = connection.createChannel();
         ch.addShutdownListener(channelListener);
         failureCount.set(0);
-        LOGGER.info(MSG("Channel #{} opened."), ch.getChannelNumber());
+        logger.atInfo().log(MSG("Channel #%s opened."), ch.getChannelNumber());
       } catch (IOException | AlreadyClosedException ex) {
-        LOGGER.error(MSG("Failed to open channel."), ex);
+        logger.atSevere().withCause(ex).log(MSG("Failed to open channel."));
         failureCount.incrementAndGet();
       }
       if (failureCount.get() > properties.getSection(Monitor.class).failureCount) {
-        LOGGER.warn("Connection has something wrong. So will be disconnected.");
+        logger.atWarning().log("Connection has something wrong. So will be disconnected.");
         disconnect();
       }
     }
@@ -136,11 +135,11 @@ public final class AMQPSession implements Session {
   @Override
   public boolean connect() {
     if (connection != null && connection.isOpen()) {
-      LOGGER.info(MSG("Already connected."));
+      logger.atInfo().log(MSG("Already connected."));
       return true;
     }
     AMQP amqp = properties.getSection(AMQP.class);
-    LOGGER.info(MSG("Connect to {}..."), amqp.uri);
+    logger.atInfo().log(MSG("Connect to %s..."), amqp.uri);
     ConnectionFactory factory = new ConnectionFactory();
     try {
       if (StringUtils.isNotEmpty(amqp.uri)) {
@@ -157,40 +156,40 @@ public final class AMQPSession implements Session {
         }
         connection = factory.newConnection();
         connection.addShutdownListener(connectionListener);
-        LOGGER.info(MSG("Connection established."));
+        logger.atInfo().log(MSG("Connection established."));
         return true;
       }
     } catch (URISyntaxException ex) {
-      LOGGER.error(MSG("URI syntax error: {}"), amqp.uri);
+      logger.atSevere().log(MSG("URI syntax error: %s"), amqp.uri);
     } catch (IOException | TimeoutException ex) {
-      LOGGER.error(MSG("Connection cannot be opened."), ex);
+      logger.atSevere().withCause(ex).log(MSG("Connection cannot be opened."));
     } catch (KeyManagementException | NoSuchAlgorithmException ex) {
-      LOGGER.error(MSG("Security error when opening connection."), ex);
+      logger.atSevere().withCause(ex).log(MSG("Security error when opening connection."));
     }
     return false;
   }
 
   @Override
   public void disconnect() {
-    LOGGER.info(MSG("Disconnecting..."));
+    logger.atInfo().log(MSG("Disconnecting..."));
     try {
       if (channel != null) {
-        LOGGER.info(MSG("Closing Channel #{}..."), channel.getChannelNumber());
+        logger.atInfo().log(MSG("Closing Channel #%s..."), channel.getChannelNumber());
         channel.close();
       }
     } catch (IOException | TimeoutException ex) {
-      LOGGER.error(MSG("Error when closing channel."), ex);
+      logger.atSevere().withCause(ex).log(MSG("Error when closing channel."));
     } finally {
       channel = null;
     }
 
     try {
       if (connection != null) {
-        LOGGER.info(MSG("Closing Connection..."));
+        logger.atInfo().log(MSG("Closing Connection..."));
         connection.close();
       }
     } catch (IOException ex) {
-      LOGGER.error(MSG("Error when closing connection."), ex);
+      logger.atSevere().withCause(ex).log(MSG("Error when closing connection."));
     } finally {
       connection = null;
     }
@@ -205,7 +204,7 @@ public final class AMQPSession implements Session {
       Message message = properties.getSection(Message.class);
       Exchange exchange = properties.getSection(Exchange.class);
       try {
-        LOGGER.debug(MSG("Sending message."));
+        logger.atFine().log(MSG("Sending message."));
         channel.basicPublish(
             exchange.name,
             message.routingKey,
@@ -213,11 +212,11 @@ public final class AMQPSession implements Session {
             messageBody.getBytes(CharEncoding.UTF_8));
         return true;
       } catch (IOException ex) {
-        LOGGER.error(MSG("Error when sending meessage."), ex);
+        logger.atSevere().withCause(ex).log(MSG("Error when sending meessage."));
         return false;
       }
     }
-    LOGGER.error(MSG("Cannot open channel."));
+    logger.atSevere().log(MSG("Cannot open channel."));
     return false;
   }
 }

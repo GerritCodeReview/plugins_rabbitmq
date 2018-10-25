@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.rabbitmq.config;
 
+import com.google.common.flogger.FluentLogger;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Gerrit;
@@ -30,12 +31,10 @@ import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
 import org.eclipse.jgit.util.FS;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class PluginProperties implements Properties {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(PluginProperties.class);
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private static final int MINIMUM_CONNECTION_MONITOR_INTERVAL = 5000;
 
@@ -77,9 +76,9 @@ public class PluginProperties implements Properties {
   @Override
   public boolean load(Properties baseProperties) {
     initialize();
-    LOGGER.info("Loading {} ...", propertiesFile);
+    logger.atInfo().log("Loading %s", propertiesFile);
     if (!Files.exists(propertiesFile)) {
-      LOGGER.warn("No {}", propertiesFile);
+      logger.atWarning().log("No %s", propertiesFile);
       return false;
     }
 
@@ -87,10 +86,10 @@ public class PluginProperties implements Properties {
     try {
       cfg.load();
     } catch (ConfigInvalidException e) {
-      LOGGER.info("{} has invalid format: {}", propertiesFile, e.getMessage());
+      logger.atInfo().log("%s has invalid format: %s", propertiesFile, e.getMessage());
       return false;
     } catch (IOException e) {
-      LOGGER.info("Cannot read {}: {}", propertiesFile, e.getMessage());
+      logger.atInfo().log("Cannot read %s: %s", propertiesFile, e.getMessage());
       return false;
     }
     for (Section section : getSections()) {
