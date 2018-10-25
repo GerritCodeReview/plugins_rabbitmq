@@ -14,19 +14,18 @@
 
 package com.googlesource.gerrit.plugins.rabbitmq.worker;
 
+import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.rabbitmq.message.Publisher;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
 public class DefaultEventWorker implements EventListener, EventWorker {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(DefaultEventWorker.class);
+  private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final Set<Publisher> publishers = new CopyOnWriteArraySet<>();
 
@@ -37,7 +36,7 @@ public class DefaultEventWorker implements EventListener, EventWorker {
 
   @Override
   public void addPublisher(String pluginName, Publisher publisher, String userName) {
-    LOGGER.warn("addPublisher() with username '{}' was called. Hence no operation.", userName);
+    logger.atWarning().log("addPublisher() with username '%s' was called. No-op.", userName);
   }
 
   @Override

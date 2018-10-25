@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.rabbitmq.config;
 
+import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.server.util.time.TimeUtil;
 import com.googlesource.gerrit.plugins.rabbitmq.annotation.MessageHeader;
 import com.googlesource.gerrit.plugins.rabbitmq.config.section.Message;
@@ -24,15 +25,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.codec.CharEncoding;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class AMQProperties {
 
   public static final String EVENT_APPID = "gerrit";
   public static final String CONTENT_TYPE_JSON = "application/json";
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(AMQProperties.class);
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final Message message;
   private final Map<String, Object> headers;
@@ -66,7 +65,8 @@ public class AMQProperties {
                 break;
             }
           } catch (IllegalAccessException | IllegalArgumentException ex) {
-            LOGGER.warn("Cannot access field {}. Cause: {}", f.getName(), ex.getMessage());
+            logger.atWarning().log(
+                "Cannot access field %s. Cause: %s", f.getName(), ex.getMessage());
           }
         }
       }

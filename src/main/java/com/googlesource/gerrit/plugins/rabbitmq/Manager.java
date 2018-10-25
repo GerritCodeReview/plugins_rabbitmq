@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.rabbitmq;
 
+import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.annotations.PluginData;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.events.LifecycleListener;
@@ -34,13 +35,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
 public class Manager implements LifecycleListener {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Manager.class);
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   public static final String FILE_EXT = ".config";
   public static final String SITE_DIR = "site";
@@ -114,11 +113,11 @@ public class Manager implements LifecycleListener {
           propList.add(site);
         }
       }
-    } catch (IOException iex) {
-      LOGGER.warn(iex.getMessage());
+    } catch (IOException ioe) {
+      logger.atWarning().log(ioe.getMessage());
     }
     if (propList.isEmpty()) {
-      LOGGER.warn("No site configs found. Using base config only!");
+      logger.atWarning().log("No site configs found. Using base config only!");
       propList.add(base);
     }
     return propList;

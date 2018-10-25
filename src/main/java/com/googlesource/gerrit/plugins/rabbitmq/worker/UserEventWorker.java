@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.rabbitmq.worker;
 
+import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.extensions.registration.RegistrationHandle;
 import com.google.gerrit.reviewdb.client.Account;
@@ -37,12 +38,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.jgit.errors.ConfigInvalidException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class UserEventWorker implements EventWorker {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(UserEventWorker.class);
+  private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final DynamicSet<UserScopedEventListener> eventListeners;
   private final WorkQueue workQueue;
@@ -74,7 +73,7 @@ public class UserEventWorker implements EventWorker {
 
   @Override
   public void addPublisher(final Publisher publisher) {
-    LOGGER.warn("addPublisher() without username was called. Hence no operation.");
+    logger.atWarning().log("addPublisher() without username was called. No-op.");
   }
 
   @Override
@@ -118,8 +117,7 @@ public class UserEventWorker implements EventWorker {
                 try {
                   userAccount = accountResolver.find(userName);
                   if (userAccount == null) {
-                    LOGGER.error(
-                        "No single user could be found when searching for listenAs: {}", userName);
+                    logger.atSevere().log("Cannot find account for listenAs: %s", userName);
                     return;
                   }
                   final IdentifiedUser user = userFactory.create(userAccount.getId());
@@ -138,9 +136,9 @@ public class UserEventWorker implements EventWorker {
                             }
                           });
                   eventListenerRegistrations.put(publisher, registration);
-                  LOGGER.info("Listen events as : {}", userName);
+                  logger.atInfo().log("Listen events as : %s", userName);
                 } catch (OrmException | ConfigInvalidException | IOException e) {
-                  LOGGER.error("Could not query database for listenAs", e);
+                  logger.atSevere().withCause(e).log("Could not query database for listenAs");
                   return;
                 } finally {
                   threadLocalRequestContext.setContext(old);
