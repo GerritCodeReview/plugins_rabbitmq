@@ -65,8 +65,9 @@ public class MessagePublisher implements Publisher, LifecycleListener {
           @Override
           public void onEvent(Event event) {
             if (!publisherThread.isAlive()) {
-              publisherThread.start();
+              ensurePublisherThreadStarted();
             }
+
             if (queue.offer(event)) {
               if (lostEventCount > 0) {
                 LOGGER.warn("Event queue is no longer full, {} events were lost", lostEventCount);
@@ -120,9 +121,7 @@ public class MessagePublisher implements Publisher, LifecycleListener {
 
   @Override
   public void start() {
-    publisherThread = new Thread(publisher);
-    publisherThread.setName("rabbitmq-publisher");
-    publisherThread.start();
+    ensurePublisherThreadStarted();
     if (!isConnected()) {
       connect();
       monitorTimer.schedule(
@@ -182,6 +181,15 @@ public class MessagePublisher implements Publisher, LifecycleListener {
       synchronized (sessionMon) {
         sessionMon.notifyAll();
       }
+    }
+  }
+
+  private synchronized void ensurePublisherThreadStarted() {
+    if (publisherThread == null || !publisherThread.isAlive()) {
+      LOGGER.info("Creating new publisher thread.");
+      publisherThread = new Thread(publisher);
+      publisherThread.setName("rabbitmq-publisher");
+      publisherThread.start();
     }
   }
 }
