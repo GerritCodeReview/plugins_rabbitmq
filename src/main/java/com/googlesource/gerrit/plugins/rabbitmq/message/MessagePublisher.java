@@ -17,7 +17,6 @@ package com.googlesource.gerrit.plugins.rabbitmq.message;
 import com.google.gerrit.common.EventListener;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.server.events.Event;
-import com.google.gerrit.server.git.WorkQueue.CancelableRunnable;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -36,10 +35,11 @@ import org.slf4j.LoggerFactory;
 public class MessagePublisher implements Publisher, LifecycleListener {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(MessagePublisher.class);
-
-  private static final int MONITOR_FIRSTTIME_DELAY = 15000;
-
   private static final int MAX_EVENTS = 16384;
+  private static final int MONITOR_FIRSTTIME_DELAY = 15000;
+  private static final String END_OF_STREAM = "END-OF-STREAM";
+  private static final Event EOS = new Event(END_OF_STREAM) {};
+
   private final Session session;
   private final Properties properties;
   private final Gson gson;
@@ -47,7 +47,7 @@ public class MessagePublisher implements Publisher, LifecycleListener {
   private final LinkedBlockingQueue<Event> queue = new LinkedBlockingQueue<>(MAX_EVENTS);
   private final Object sessionMon = new Object();
   private EventListener eventListener;
-  private CancelableRunnable publisher;
+  private GracefullyCancelableRunnable publisher;
   private Thread publisherThread;
 
   @Inject
@@ -81,7 +81,7 @@ public class MessagePublisher implements Publisher, LifecycleListener {
           }
         };
     this.publisher =
-        new CancelableRunnable() {
+        new GracefullyCancelableRunnable() {
 
           boolean canceled = false;
 
@@ -90,6 +90,9 @@ public class MessagePublisher implements Publisher, LifecycleListener {
             while (!canceled) {
               try {
                 Event event = queue.take();
+                if (event.getType().equals(END_OF_STREAM)) {
+                  continue;
+                }
                 while (!isConnected() && !canceled) {
                   synchronized (sessionMon) {
                     sessionMon.wait(1000);
@@ -106,7 +109,10 @@ public class MessagePublisher implements Publisher, LifecycleListener {
 
           @Override
           public void cancel() {
-            this.canceled = true;
+            canceled = true;
+            if (queue.isEmpty()) {
+              queue.offer(EOS);
+            }
           }
 
           @Override
@@ -191,5 +197,10 @@ public class MessagePublisher implements Publisher, LifecycleListener {
       publisherThread.setName("rabbitmq-publisher");
       publisherThread.start();
     }
+  }
+  /** Runnable that can be gracefully canceled while running. */
+  private interface GracefullyCancelableRunnable extends Runnable {
+    /** Gracefully cancels the Runnable after completing ongoing task. */
+    public void cancel();
   }
 }
