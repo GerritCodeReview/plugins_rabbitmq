@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c482d510_d6d4836c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/message/MessagePublisher.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1014252
+      },
+      "writtenOn": "2018-12-28T12:18:48Z",
+      "side": 1,
+      "message": "Is there a point of protecting this in a synchronized method?\n\nThread1: !publisherThread.isAlive() -\u003e False\nThread2: !publisherThread.isAlive() -\u003e False\nThread1: Create Publisher-Thread-1\nThread2: Create Publisher-Thread-2\nThread1: Assign Publisher-Thread-1 to publisherThread\nThread2: Assign Publisher-Thread-2 to publisherThread leaving Publisher-Thread-1 alive without reference.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 13
+      },
+      "revId": "629638449706524bd3709de0a32d2f7b00df58de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
