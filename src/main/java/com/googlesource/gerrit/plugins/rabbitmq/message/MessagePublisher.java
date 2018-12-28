@@ -36,10 +36,11 @@ import org.slf4j.LoggerFactory;
 public class MessagePublisher implements Publisher, LifecycleListener {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(MessagePublisher.class);
-
-  private static final int MONITOR_FIRSTTIME_DELAY = 15000;
-
   private static final int MAX_EVENTS = 16384;
+  private static final int MONITOR_FIRSTTIME_DELAY = 15000;
+  private static final int SHUTDOWN_WAIT_MILLIS = 2000;
+
+
   private final Session session;
   private final Properties properties;
   private final Gson gson;
@@ -145,7 +146,7 @@ public class MessagePublisher implements Publisher, LifecycleListener {
     publisher.cancel();
     if (publisherThread != null) {
       try {
-        publisherThread.join();
+        publisherThread.join(SHUTDOWN_WAIT_MILLIS);
       } catch (InterruptedException e) {
         // Do nothing
       }
