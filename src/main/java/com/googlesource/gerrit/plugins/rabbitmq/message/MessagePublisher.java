@@ -145,7 +145,7 @@ public class MessagePublisher implements Publisher, LifecycleListener {
     publisher.cancel();
     if (publisherThread != null) {
       try {
-        publisherThread.join();
+        publisherThread.join(2000);
       } catch (InterruptedException e) {
         // Do nothing
       }
