@@ -189,8 +189,8 @@ public final class AMQPSession implements Session {
         LOGGER.info(MSG("Closing Connection..."));
         connection.close();
       }
-    } catch (IOException ex) {
-      LOGGER.error(MSG("Error when closing connection."), ex);
+    } catch (IOException | ShutdownSignalException ex) {
+      LOGGER.warn(MSG("Error when closing connection."), ex);
     } finally {
       connection = null;
     }
