@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aa96f4c_4f16e442",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/message/MessagePublisher.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1021592
+      },
+      "writtenOn": "2019-01-08T21:14:46Z",
+      "side": 1,
+      "message": "Nice. I like the idea of the END_OF_STREAM event to mitigate unnecessary delays in the shutdown, though I would use a Magic Cookie token instead of having the value of the const be humanly readable.",
+      "range": {
+        "startLine": 40,
+        "startChar": 47,
+        "endLine": 40,
+        "endChar": 60
+      },
+      "revId": "fd331e802e7f30ebb728dc8e2f94122310b80968",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1555ed3_5b090595",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/message/MessagePublisher.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1021592
+      },
+      "writtenOn": "2019-01-08T21:14:46Z",
+      "side": 1,
+      "message": "Does this not risk a race condition? The runner thread may see a cached value of the canceled boolean and you may end up in a situation where the canceled boolean is not seen as \"false\" until the thread is already stuck waiting for a new event. \n\nUse AtomicBoolean to mitigate this.",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 13
+      },
+      "revId": "fd331e802e7f30ebb728dc8e2f94122310b80968",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
