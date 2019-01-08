@@ -46,6 +46,29 @@
       "revId": "3e9ce163a42dd0b20be0f32b5e6fc664e5becbf6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cc7b8c96_432b2659",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/message/MessagePublisher.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1021592
+      },
+      "writtenOn": "2019-01-08T14:09:33Z",
+      "side": 1,
+      "message": "It feels kinda wrong to see a timeout of this kind on a CancelableRunnable.\n\nI think it makes more sense to rework run() to have queue.take() replaced with queue.poll(long timeout, TimeUnit unit) instead. If a null is returned then you can just \"continue;\" the \"while()\". E.g something like:\n\n            while (!canceled) {\n              try {\n                Event event \u003d queue.poll(1000, TimeUnit.MILLISECONDS);\n                if (event \u003d\u003d null) {\n                  continue;\n                }\n                while (!isConnected() \u0026\u0026 !canceled) {\n                  synchronized (sessionMon) {\n                    sessionMon.wait(1000);\n                  }\n                }\n                if (!publishEvent(event) \u0026\u0026 !queue.offer(event)) {\n                  LOGGER.error(\"Event lost: {}\", gson.toJson(event));\n                }\n              } catch (InterruptedException e) {\n                LOGGER.warn(\"Interupted while waiting for event or connection.\", e);\n              }\n            }\n\n(Also, CancelableRunnable should probably be CanceledWhileRunning)",
+      "range": {
+        "startLine": 148,
+        "startChar": 29,
+        "endLine": 148,
+        "endChar": 33
+      },
+      "revId": "3e9ce163a42dd0b20be0f32b5e6fc664e5becbf6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
