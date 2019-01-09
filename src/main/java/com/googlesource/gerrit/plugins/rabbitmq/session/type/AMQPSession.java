@@ -125,7 +125,8 @@ public final class AMQPSession implements Session {
         failureCount.incrementAndGet();
       }
       if (failureCount.get() > properties.getSection(Monitor.class).failureCount) {
-        logger.atWarning().log("Creating channel failed %d times, closing connection.", failureCount.get());
+        logger.atWarning().log(
+            "Creating channel failed %d times, closing connection.", failureCount.get());
         disconnect();
       }
     }
