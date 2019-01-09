@@ -125,7 +125,8 @@ public final class AMQPSession implements Session {
         failureCount.incrementAndGet();
       }
       if (failureCount.get() > properties.getSection(Monitor.class).failureCount) {
-        logger.atWarning().log("Creating channel failed %d times, closing connection.", failureCount.get());
+        logger.atWarning().log(
+            "Creating channel failed %d times, closing connection.", failureCount.get());
         disconnect();
       }
     }
@@ -188,8 +189,8 @@ public final class AMQPSession implements Session {
         logger.atInfo().log(MSG("Closing Connection..."));
         connection.close();
       }
-    } catch (IOException ex) {
-      logger.atSevere().withCause(ex).log(MSG("Error when closing connection."));
+    } catch (IOException | ShutdownSignalException ex) {
+      logger.atWarning().withCause(ex).log(MSG("Error when closing connection."));
     } finally {
       connection = null;
     }
