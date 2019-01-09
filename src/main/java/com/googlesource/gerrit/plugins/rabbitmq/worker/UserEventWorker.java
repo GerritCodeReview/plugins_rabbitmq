@@ -18,7 +18,6 @@ import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.extensions.registration.RegistrationHandle;
 import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.PluginUser;
@@ -29,10 +28,7 @@ import com.google.gerrit.server.git.WorkQueue;
 import com.google.gerrit.server.util.RequestContext;
 import com.google.gerrit.server.util.ThreadLocalRequestContext;
 import com.google.gwtorm.server.OrmException;
-import com.google.gwtorm.server.SchemaFactory;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.ProvisionException;
 import com.googlesource.gerrit.plugins.rabbitmq.message.Publisher;
 import java.io.IOException;
 import java.util.HashMap;
@@ -49,7 +45,6 @@ public class UserEventWorker implements EventWorker {
   private final IdentifiedUser.GenericFactory userFactory;
   private final ThreadLocalRequestContext threadLocalRequestContext;
   private final PluginUser pluginUser;
-  private final SchemaFactory<ReviewDb> schemaFactory;
   private final Map<Publisher, RegistrationHandle> eventListenerRegistrations;
 
   @Inject
@@ -59,15 +54,13 @@ public class UserEventWorker implements EventWorker {
       AccountResolver accountResolver,
       IdentifiedUser.GenericFactory userFactory,
       ThreadLocalRequestContext threadLocalRequestContext,
-      PluginUser pluginUser,
-      SchemaFactory<ReviewDb> schemaFactory) {
+      PluginUser pluginUser) {
     this.eventListeners = eventListeners;
     this.workQueue = workQueue;
     this.accountResolver = accountResolver;
     this.userFactory = userFactory;
     this.threadLocalRequestContext = threadLocalRequestContext;
     this.pluginUser = pluginUser;
-    this.schemaFactory = schemaFactory;
     eventListenerRegistrations = new HashMap<>();
   }
 
@@ -83,7 +76,6 @@ public class UserEventWorker implements EventWorker {
         .getDefaultQueue()
         .submit(
             new Runnable() {
-              private ReviewDb db;
               private Account userAccount;
 
               @Override
@@ -95,23 +87,6 @@ public class UserEventWorker implements EventWorker {
                           @Override
                           public CurrentUser getUser() {
                             return pluginUser;
-                          }
-
-                          @Override
-                          public Provider<ReviewDb> getReviewDbProvider() {
-                            return new Provider<ReviewDb>() {
-                              @Override
-                              public ReviewDb get() {
-                                if (db == null) {
-                                  try {
-                                    db = schemaFactory.open();
-                                  } catch (OrmException e) {
-                                    throw new ProvisionException("Cannot open ReviewDb", e);
-                                  }
-                                }
-                                return db;
-                              }
-                            };
                           }
                         });
                 try {
@@ -142,10 +117,6 @@ public class UserEventWorker implements EventWorker {
                   return;
                 } finally {
                   threadLocalRequestContext.setContext(old);
-                  if (db != null) {
-                    db.close();
-                    db = null;
-                  }
                 }
               }
             });
