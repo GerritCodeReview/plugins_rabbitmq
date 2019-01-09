@@ -93,6 +93,30 @@
       "revId": "fd331e802e7f30ebb728dc8e2f94122310b80968",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8285404b_22d50436",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/message/MessagePublisher.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1021592
+      },
+      "writtenOn": "2019-01-09T09:27:52Z",
+      "side": 1,
+      "message": "\u003e Using Volatile since the boolean is set and not operated on.\n\nVolatile should be fine, though I\u0027m not sure what the distinction is between setting and reading a boolean and operating on it.",
+      "parentUuid": "812ac591_fa20e13c",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 13
+      },
+      "revId": "fd331e802e7f30ebb728dc8e2f94122310b80968",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
