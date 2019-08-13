@@ -17,17 +17,16 @@ package com.googlesource.gerrit.plugins.rabbitmq.worker;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.extensions.registration.RegistrationHandle;
-import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.PluginUser;
 import com.google.gerrit.server.account.AccountResolver;
+import com.google.gerrit.server.account.AccountResolver.UnresolvableAccountException;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.UserScopedEventListener;
 import com.google.gerrit.server.git.WorkQueue;
 import com.google.gerrit.server.util.RequestContext;
 import com.google.gerrit.server.util.ThreadLocalRequestContext;
-import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.rabbitmq.message.Publisher;
 import java.io.IOException;
@@ -42,7 +41,6 @@ public class UserEventWorker implements EventWorker {
   private final DynamicSet<UserScopedEventListener> eventListeners;
   private final WorkQueue workQueue;
   private final AccountResolver accountResolver;
-  private final IdentifiedUser.GenericFactory userFactory;
   private final ThreadLocalRequestContext threadLocalRequestContext;
   private final PluginUser pluginUser;
   private final Map<Publisher, RegistrationHandle> eventListenerRegistrations;
@@ -52,13 +50,11 @@ public class UserEventWorker implements EventWorker {
       DynamicSet<UserScopedEventListener> eventListeners,
       WorkQueue workQueue,
       AccountResolver accountResolver,
-      IdentifiedUser.GenericFactory userFactory,
       ThreadLocalRequestContext threadLocalRequestContext,
       PluginUser pluginUser) {
     this.eventListeners = eventListeners;
     this.workQueue = workQueue;
     this.accountResolver = accountResolver;
-    this.userFactory = userFactory;
     this.threadLocalRequestContext = threadLocalRequestContext;
     this.pluginUser = pluginUser;
     eventListenerRegistrations = new HashMap<>();
@@ -76,7 +72,7 @@ public class UserEventWorker implements EventWorker {
         .getDefaultQueue()
         .submit(
             new Runnable() {
-              private Account userAccount;
+
 
               @Override
               public void run() {
@@ -90,12 +86,7 @@ public class UserEventWorker implements EventWorker {
                           }
                         });
                 try {
-                  userAccount = accountResolver.find(userName);
-                  if (userAccount == null) {
-                    logger.atSevere().log("Cannot find account for listenAs: %s", userName);
-                    return;
-                  }
-                  final IdentifiedUser user = userFactory.create(userAccount.getId());
+                  final IdentifiedUser user = accountResolver.resolve(userName).asUniqueUser();
                   RegistrationHandle registration =
                       eventListeners.add(
                           pluginName,
@@ -112,7 +103,10 @@ public class UserEventWorker implements EventWorker {
                           });
                   eventListenerRegistrations.put(publisher, registration);
                   logger.atInfo().log("Listen events as : %s", userName);
-                } catch (OrmException | ConfigInvalidException | IOException e) {
+                } catch (UnresolvableAccountException uae) {
+                  logger.atSevere().withCause(uae).log("Cannot find account for listenAs: %s", userName);
+                }
+                catch (ConfigInvalidException | IOException e) {
                   logger.atSevere().withCause(e).log("Could not query database for listenAs");
                   return;
                 } finally {
