@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "adf57978_a4dfd661",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/worker/UserEventWorker.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-08-14T00:38:32Z",
+      "side": 1,
+      "message": "Is this exception intentionally in a separate catch from the other block, without the return statement?",
+      "range": {
+        "startLine": 105,
+        "startChar": 18,
+        "endLine": 107,
+        "endChar": 72
+      },
+      "revId": "19a447d386e49eabfd5c79608bf61996cfd44fac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
