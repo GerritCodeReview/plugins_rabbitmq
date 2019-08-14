@@ -46,6 +46,30 @@
       "revId": "19a447d386e49eabfd5c79608bf61996cfd44fac",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd4256de_96f5aece",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/worker/UserEventWorker.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1014252
+      },
+      "writtenOn": "2019-08-14T08:30:51Z",
+      "side": 1,
+      "message": "I removed the original return statement since I cannot for the life of me see the point of it.",
+      "parentUuid": "36eaf8ed_cf4f115b",
+      "range": {
+        "startLine": 105,
+        "startChar": 18,
+        "endLine": 107,
+        "endChar": 72
+      },
+      "revId": "19a447d386e49eabfd5c79608bf61996cfd44fac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
