@@ -15,7 +15,7 @@
 package com.googlesource.gerrit.plugins.rabbitmq.message;
 
 import com.google.common.base.Supplier;
-import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.entities.Project;
 import com.google.gerrit.server.events.ProjectNameKeySerializer;
 import com.google.gerrit.server.events.SupplierSerializer;
 import com.google.gson.Gson;
