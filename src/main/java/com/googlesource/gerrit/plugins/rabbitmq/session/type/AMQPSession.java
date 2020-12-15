@@ -26,8 +26,6 @@ import com.rabbitmq.client.AlreadyClosedException;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.ShutdownListener;
-import com.rabbitmq.client.ShutdownNotifier;
 import com.rabbitmq.client.ShutdownSignalException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -41,58 +39,11 @@ import org.apache.commons.lang.StringUtils;
 public final class AMQPSession implements Session {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  private class ShutdownListenerImpl implements ShutdownListener {
-
-    private final Class<?> clazz;
-
-    <T extends ShutdownNotifier> ShutdownListenerImpl(Class<T> clazz) {
-      this.clazz = clazz;
-    }
-
-    @Override
-    public void shutdownCompleted(ShutdownSignalException cause) {
-      if (cause != null) {
-        Object obj = cause.getReference();
-        if (Channel.class.isInstance(obj)) {
-          Channel.class.cast(obj).removeShutdownListener(this);
-        } else if (Connection.class.isInstance(obj)) {
-          Connection.class.cast(obj).removeShutdownListener(this);
-        }
-        if (clazz.isInstance(obj)) {
-          if (clazz == Channel.class) {
-            Channel ch = Channel.class.cast(obj);
-            if (cause.isInitiatedByApplication()) {
-              logger.atInfo().log(MSG("Channel #%d closed by application."), ch.getChannelNumber());
-            } else {
-              logger.atWarning().log(
-                  MSG("Channel #%dclosed. Cause: %s"), ch.getChannelNumber(), cause.getMessage());
-            }
-            if (ch.equals(AMQPSession.this.channel)) {
-              AMQPSession.this.channel = null;
-            }
-          } else if (clazz == Connection.class) {
-            Connection conn = Connection.class.cast(obj);
-            if (cause.isInitiatedByApplication()) {
-              logger.atInfo().log(MSG("Connection closed by application."));
-            } else {
-              logger.atWarning().log(MSG("Connection closed. Cause: %s"), cause.getMessage());
-            }
-            if (conn.equals(AMQPSession.this.connection)) {
-              AMQPSession.this.connection = null;
-            }
-          }
-        }
-      }
-    }
-  }
-
   private final Properties properties;
   private volatile Connection connection;
   private volatile Channel channel;
 
   private final AtomicInteger failureCount = new AtomicInteger(0);
-  private final ShutdownListener connectionListener = new ShutdownListenerImpl(Connection.class);
-  private final ShutdownListener channelListener = new ShutdownListenerImpl(Channel.class);
 
   public AMQPSession(Properties properties) {
     this.properties = properties;
@@ -111,15 +62,27 @@ public final class AMQPSession implements Session {
   }
 
   private Channel getChannel() {
-    Channel ch = null;
     if (connection == null) {
       connect();
     } else {
       try {
-        ch = connection.createChannel();
-        ch.addShutdownListener(channelListener);
+        final Channel ch = connection.createChannel();
+        ch.addShutdownListener(
+            cause -> {
+              if (cause.isInitiatedByApplication()) {
+                logger.atInfo().log(
+                    MSG("Channel #%d closed by application."), ch.getChannelNumber());
+              } else {
+                logger.atWarning().log(
+                    MSG("Channel #%dclosed. Cause: %s"), ch.getChannelNumber(), cause.getMessage());
+              }
+              if (ch.equals(AMQPSession.this.channel)) {
+                AMQPSession.this.channel = null;
+              }
+            });
         failureCount.set(0);
         logger.atInfo().log(MSG("Channel #%d opened."), ch.getChannelNumber());
+        return ch;
       } catch (IOException | AlreadyClosedException ex) {
         logger.atSevere().withCause(ex).log(MSG("Failed to open channel."));
         failureCount.incrementAndGet();
@@ -130,7 +93,7 @@ public final class AMQPSession implements Session {
         disconnect();
       }
     }
-    return ch;
+    return null;
   }
 
   @Override
@@ -156,7 +119,17 @@ public final class AMQPSession implements Session {
           factory.setPassword(amqp.password);
         }
         connection = factory.newConnection();
-        connection.addShutdownListener(connectionListener);
+        connection.addShutdownListener(
+            cause -> {
+              if (cause.isInitiatedByApplication()) {
+                logger.atInfo().log(MSG("Connection closed by application."));
+              } else {
+                logger.atWarning().log(MSG("Connection closed. Cause: %s"), cause.getMessage());
+              }
+              if (connection.equals(AMQPSession.this.connection)) {
+                AMQPSession.this.connection = null;
+              }
+            });
         logger.atInfo().log(MSG("Connection established."));
         return true;
       }
