@@ -16,6 +16,24 @@
       "message": "This isn\u0027t a behavioral change in this patch, but isn\u0027t it weird that calling getChannel() on a closed connection results in a reconnection attempt but that null is still returned?",
       "revId": "c24ca44603177cd653e2573ebdd541d30b37b851",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0d9530c_9ff13c63",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/rabbitmq/session/type/AMQPSession.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1014252
+      },
+      "writtenOn": "2021-01-26T10:06:14Z",
+      "side": 1,
+      "message": "Yes that struck me as odd also. Instead of opening a connection and continue it\u0027s implemented to rely on the retry mechanism to try again after it fails this time.\nI opted to not change the behavior to minimize the complexity of this patch and to let sleeping dogs lie.",
+      "parentUuid": "1efccf94_d963e869",
+      "revId": "c24ca44603177cd653e2573ebdd541d30b37b851",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
